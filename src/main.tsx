@@ -7,12 +7,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import App from './App.tsx';
 import { AuthProvider } from './context/AuthContext.tsx';
 import { queryClient } from './services/queryClient';
+import { getBasePath } from './utils/basePath';
 import './styles/main.scss';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <BrowserRouter basename={getBasePath()}>
         <AuthProvider>
           <App />
           <ToastContainer position="top-right" autoClose={3500} hideProgressBar theme="light" />

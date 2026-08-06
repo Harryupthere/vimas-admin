@@ -2,6 +2,7 @@ import { createContext, useCallback, useMemo, useState, type ReactNode } from 'r
 import { authService } from '../services/auth.service';
 import { tokenStorage } from '../utils/tokenStorage';
 import { isTokenExpired } from '../utils/jwt';
+import { withBasePath } from '../utils/basePath';
 import type { AdminUser, LoginRequest } from '../types/auth.types';
 
 interface AuthContextValue {
@@ -48,7 +49,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = useCallback(() => {
     tokenStorage.clear();
     setAdmin(null);
-    window.location.href = '/login';
+    // Bare window redirect (not react-router), so the configured base path
+    // has to be prepended by hand — see VITE_BASE_PATH in vite.config.ts.
+    window.location.href = withBasePath('/login');
   }, []);
 
   const value = useMemo<AuthContextValue>(

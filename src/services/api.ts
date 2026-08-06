@@ -1,6 +1,7 @@
 import axios, { type AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { tokenStorage } from '../utils/tokenStorage';
+import { withBasePath } from '../utils/basePath';
 import { API_ENDPOINTS } from './endpoints';
 import type { ApiEnvelope, ApiError, ServiceResult } from '../types/api.types';
 
@@ -79,8 +80,9 @@ apiClient.interceptors.response.use(
           toast.error('Your session has expired. Please log in again.');
         }
         tokenStorage.clear();
-        if (window.location.pathname !== '/login') {
-          window.location.href = '/login';
+        const loginPath = withBasePath('/login');
+        if (window.location.pathname !== loginPath) {
+          window.location.href = loginPath;
         }
       }
     } else if (!isAuthEndpoint) {
