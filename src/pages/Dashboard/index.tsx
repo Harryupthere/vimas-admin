@@ -32,7 +32,7 @@ export default function DashboardPage() {
     queryKey: ['dashboard', 'transactions'],
     queryFn: () => pointTransactionsService.list({ page: 1, limit: RECENT_LIMIT }),
   });
-
+console.log("?????")
   return (
     <div>
       <PageHeader title="Dashboard" description="Overview of your VimasGV platform." />
