@@ -1,0 +1,45 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: v.$spacing-4;
+  align-items: start;
+
+  @include m.respond-below(v.$breakpoint-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  @include m.card;
+  padding: v.$spacing-5;
+}
+
+.cardTitle {
+  font-size: v.$font-size-base;
+  font-weight: 600;
+  margin-bottom: v.$spacing-4;
+}
+
+.identity {
+  @include m.flex(center, flex-start, v.$spacing-3);
+}
+
+.name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.email {
+  font-size: v.$font-size-sm;
+  color: var(--text-secondary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-4;
+  max-width: 360px;
+}

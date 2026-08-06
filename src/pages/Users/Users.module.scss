@@ -1,0 +1,66 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.filters {
+  @include m.flex(center, flex-start, v.$spacing-3);
+  flex-wrap: wrap;
+  margin-bottom: v.$spacing-4;
+}
+
+.filterSelect {
+  width: 200px;
+}
+
+.userCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.userName {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.userSub {
+  font-size: v.$font-size-xs;
+  color: var(--text-secondary);
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}
+
+.modalLoading {
+  @include m.flex(center, center);
+  padding: v.$spacing-8 0;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-4;
+
+  @include m.respond-below(v.$breakpoint-sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fieldLabel {
+  font-size: v.$font-size-xs;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.fieldValue {
+  font-size: v.$font-size-sm;
+  color: var(--text-primary);
+  word-break: break-word;
+}

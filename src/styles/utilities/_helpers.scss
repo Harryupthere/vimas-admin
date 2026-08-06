@@ -1,0 +1,48 @@
+@use '../abstracts/variables' as v;
+
+.flex {
+  display: flex;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.items-center {
+  align-items: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-1 {
+  gap: v.$spacing-1;
+}
+.gap-2 {
+  gap: v.$spacing-2;
+}
+.gap-3 {
+  gap: v.$spacing-3;
+}
+.gap-4 {
+  gap: v.$spacing-4;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

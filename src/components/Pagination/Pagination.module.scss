@@ -1,0 +1,49 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.wrap {
+  @include m.flex(center, space-between);
+  flex-wrap: wrap;
+  gap: v.$spacing-3;
+  padding: v.$spacing-4;
+}
+
+.summary {
+  font-size: v.$font-size-sm;
+  color: var(--text-secondary);
+}
+
+.pages {
+  @include m.flex(center, flex-start, 4px);
+}
+
+.navBtn,
+.pageBtn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: var(--radius-sm);
+  font-size: v.$font-size-sm;
+  color: var(--text-secondary);
+
+  &:hover:not(:disabled) {
+    background: var(--gray-100);
+    color: var(--text-primary);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.pageBtn.active {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  font-weight: 600;
+}
+
+.ellipsis {
+  padding: 0 4px;
+  color: var(--text-secondary);
+}

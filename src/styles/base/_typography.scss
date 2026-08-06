@@ -1,0 +1,47 @@
+@use '../abstracts/variables' as v;
+
+body {
+  font-family: v.$font-family;
+  font-size: v.$font-size-base;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: v.$font-size-2xl;
+}
+h2 {
+  font-size: v.$font-size-xl;
+}
+h3 {
+  font-size: v.$font-size-lg;
+}
+h4 {
+  font-size: v.$font-size-md;
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+.text-sm {
+  font-size: v.$font-size-sm;
+}
+.text-xs {
+  font-size: v.$font-size-xs;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}

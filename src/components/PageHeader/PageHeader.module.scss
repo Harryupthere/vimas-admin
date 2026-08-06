@@ -1,0 +1,25 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.header {
+  @include m.flex(flex-start, space-between);
+  gap: v.$spacing-4;
+  margin-bottom: v.$spacing-6;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: v.$font-size-xl;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.description {
+  margin-top: 4px;
+  font-size: v.$font-size-sm;
+  color: var(--text-secondary);
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}

@@ -1,0 +1,30 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.filters {
+  @include m.flex(center, flex-start, v.$spacing-3);
+  margin-bottom: v.$spacing-4;
+  flex-wrap: wrap;
+}
+
+.filterSelect {
+  width: 160px;
+}
+
+.filterInput {
+  width: 140px;
+}
+
+.comment {
+  max-width: 280px;
+  @include m.truncate;
+  display: block;
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}
+
+.statusSelect {
+  width: 120px;
+}

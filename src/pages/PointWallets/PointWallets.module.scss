@@ -1,0 +1,47 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.tabs {
+  @include m.flex(center, flex-start, 4px);
+  margin-bottom: v.$spacing-4;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab {
+  padding: 10px 16px;
+  font-size: v.$font-size-sm;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.tabActive {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-4;
+}
+
+.row3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: v.$spacing-4;
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}
+
+.toolbar {
+  @include m.flex(center, flex-end);
+  margin-bottom: v.$spacing-4;
+}

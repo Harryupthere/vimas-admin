@@ -1,0 +1,17 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.review {
+  max-width: 280px;
+  @include m.truncate;
+  display: block;
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}
+
+.stars {
+  color: var(--warning);
+  font-weight: 600;
+}

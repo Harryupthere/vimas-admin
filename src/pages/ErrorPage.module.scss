@@ -1,0 +1,27 @@
+@use '../styles/abstracts/mixins' as m;
+@use '../styles/abstracts/variables' as v;
+
+.page {
+  min-height: 70vh;
+  @include m.flex(center, center);
+  flex-direction: column;
+  text-align: center;
+  gap: v.$spacing-2;
+  padding: v.$spacing-6;
+}
+
+.code {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.title {
+  font-size: v.$font-size-xl;
+}
+
+.description {
+  color: var(--text-secondary);
+  margin-bottom: v.$spacing-4;
+  max-width: 360px;
+}

@@ -1,0 +1,9 @@
+@use '../../styles/abstracts/variables' as v;
+
+.footer {
+  padding: v.$spacing-4 v.$spacing-5;
+  font-size: v.$font-size-xs;
+  color: var(--text-secondary);
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+}

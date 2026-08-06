@@ -1,0 +1,82 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-4;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-4;
+}
+
+.checkboxRow {
+  @include m.flex(center, flex-start, v.$spacing-2);
+  font-size: v.$font-size-sm;
+  color: var(--text-primary);
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}
+
+.productCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.productName {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.productSub {
+  font-size: v.$font-size-xs;
+  color: var(--text-secondary);
+}
+
+.mediaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: v.$spacing-3;
+  margin-bottom: v.$spacing-4;
+}
+
+.mediaItem {
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+.mediaImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mediaRemove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 14px;
+  @include m.flex(center, center);
+
+  &:hover {
+    background: var(--danger);
+  }
+}
+
+.addMediaRow {
+  @include m.flex(center, flex-start, v.$spacing-2);
+}

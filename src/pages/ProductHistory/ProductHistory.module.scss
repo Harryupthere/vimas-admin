@@ -1,0 +1,42 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.filters {
+  @include m.flex(center, flex-start, v.$spacing-3);
+  margin-bottom: v.$spacing-4;
+}
+
+.filterInput {
+  width: 180px;
+}
+
+.diffGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-4;
+
+  @include m.respond-below(v.$breakpoint-sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.diffCol h4 {
+  font-size: v.$font-size-xs;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: v.$spacing-2;
+}
+
+.diffPre {
+  background: var(--gray-50);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: v.$spacing-3;
+  font-size: v.$font-size-xs;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 320px;
+  overflow-y: auto;
+  @include m.scrollbar-thin;
+}

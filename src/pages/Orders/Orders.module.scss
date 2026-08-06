@@ -1,0 +1,51 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-4;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #fff;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-4;
+
+  @include m.respond-below(v.$breakpoint-sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fieldLabel {
+  font-size: v.$font-size-xs;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.fieldValue {
+  font-size: v.$font-size-sm;
+  color: var(--text-primary);
+}

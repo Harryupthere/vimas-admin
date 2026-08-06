@@ -1,0 +1,75 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.wrap {
+  @include m.card;
+  overflow-x: auto;
+  @include m.scrollbar-thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+thead {
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  padding: 12px 16px;
+  font-size: v.$font-size-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px 16px;
+  font-size: v.$font-size-sm;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: var(--gray-25);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.skeleton {
+  display: block;
+  height: 14px;
+  width: 80%;
+  border-radius: 4px;
+  background: var(--gray-100);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.errorRow {
+  padding: 24px;
+  text-align: center;
+  color: var(--danger);
+  font-size: v.$font-size-sm;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

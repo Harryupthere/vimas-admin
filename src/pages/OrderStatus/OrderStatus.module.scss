@@ -1,0 +1,12 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-4;
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}

@@ -1,0 +1,8 @@
+// Global stylesheet entry point — imported once in main.tsx.
+// Component-level styles live in their own *.module.scss files and
+// reach theme colors via the CSS custom properties defined below.
+
+@use './theme/theme';
+@use './base/reset';
+@use './base/typography';
+@use './utilities/helpers';

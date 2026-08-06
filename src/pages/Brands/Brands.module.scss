@@ -1,0 +1,40 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.filters {
+  @include m.flex(center, flex-start, v.$spacing-3);
+  margin-bottom: v.$spacing-4;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-4;
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}
+
+.categoryList {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-2;
+  max-height: 320px;
+  overflow-y: auto;
+  @include m.scrollbar-thin;
+}
+
+.categoryRow {
+  @include m.flex(center, space-between);
+  padding: v.$spacing-2 v.$spacing-3;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: v.$font-size-sm;
+}
+
+.hint {
+  font-size: v.$font-size-xs;
+  color: var(--text-secondary);
+  margin-bottom: v.$spacing-3;
+}

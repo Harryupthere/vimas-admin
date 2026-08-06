@@ -1,0 +1,73 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.card {
+  @include m.card;
+  padding: v.$spacing-5;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-3;
+  min-width: 0;
+}
+
+.placeholder {
+  border-style: dashed;
+  background: var(--gray-25);
+}
+
+.top {
+  @include m.flex(center, space-between);
+}
+
+.label {
+  font-size: v.$font-size-sm;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  @include m.truncate;
+}
+
+.placeholderText {
+  font-size: v.$font-size-sm;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.trend {
+  font-size: v.$font-size-xs;
+  font-weight: 500;
+  width: fit-content;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.up {
+  color: var(--success);
+  background: var(--success-light);
+}
+
+.down {
+  color: var(--danger);
+  background: var(--danger-light);
+}
+
+.neutral {
+  color: var(--text-secondary);
+  background: var(--gray-100);
+}

@@ -1,0 +1,72 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-body);
+  padding: v.$spacing-4;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: v.$spacing-8;
+}
+
+.brand {
+  @include m.flex(center, flex-start, v.$spacing-3);
+  margin-bottom: v.$spacing-8;
+}
+
+.logoMark {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: var(--primary-contrast);
+  font-weight: 700;
+  font-size: 14px;
+  @include m.flex(center, center);
+}
+
+.brandName {
+  font-size: v.$font-size-md;
+  font-weight: 700;
+}
+
+.brandTag {
+  font-size: v.$font-size-xs;
+  color: var(--text-secondary);
+}
+
+.title {
+  font-size: v.$font-size-lg;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: v.$font-size-sm;
+  color: var(--text-secondary);
+  margin-bottom: v.$spacing-6;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-4;
+}
+
+.formError {
+  background: var(--danger-light);
+  color: var(--danger);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 13px;
+}

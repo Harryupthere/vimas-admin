@@ -1,0 +1,66 @@
+@use '../../styles/abstracts/mixins' as m;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.selectWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+
+  &:focus-within {
+    @include m.focus-ring;
+  }
+
+  &.hasError {
+    border-color: var(--danger);
+  }
+}
+
+.select {
+  flex: 1;
+  height: 38px;
+  padding: 0 32px 0 12px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--text-primary);
+  appearance: none;
+  cursor: pointer;
+
+  &:disabled {
+    color: var(--text-secondary);
+    cursor: not-allowed;
+  }
+}
+
+.chevron {
+  position: absolute;
+  right: 10px;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.errorText {
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.hintText {
+  font-size: 12px;
+  color: var(--text-secondary);
+}

@@ -1,0 +1,35 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.layout {
+  min-height: 100vh;
+}
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin-left: var(--sidebar-width);
+  transition: margin-left 0.18s ease;
+
+  @include m.respond-below(v.$breakpoint-lg) {
+    margin-left: 0;
+  }
+}
+
+.mainCollapsed {
+  margin-left: var(--sidebar-width-collapsed);
+
+  @include m.respond-below(v.$breakpoint-lg) {
+    margin-left: 0;
+  }
+}
+
+.content {
+  flex: 1;
+  padding: v.$spacing-6;
+
+  @include m.respond-below(v.$breakpoint-sm) {
+    padding: v.$spacing-4;
+  }
+}

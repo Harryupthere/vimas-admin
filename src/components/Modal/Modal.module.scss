@@ -1,0 +1,72 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 17, 21, 0.5);
+  z-index: v.$z-modal-backdrop;
+  @include m.flex(center, center);
+  padding: v.$spacing-4;
+}
+
+.panel {
+  width: 100%;
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: v.$z-modal;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sm {
+  max-width: 400px;
+}
+.md {
+  max-width: 560px;
+}
+.lg {
+  max-width: 780px;
+}
+
+.header {
+  @include m.flex(center, space-between);
+  padding: v.$spacing-4 v.$spacing-5;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: v.$font-size-base;
+  font-weight: 600;
+}
+
+.closeBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-secondary);
+  @include m.flex(center, center);
+
+  &:hover {
+    background: var(--gray-100);
+    color: var(--text-primary);
+  }
+}
+
+.body {
+  padding: v.$spacing-5;
+  overflow-y: auto;
+  @include m.scrollbar-thin;
+}
+
+.footer {
+  @include m.flex(center, flex-end, v.$spacing-2);
+  padding: v.$spacing-4 v.$spacing-5;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+}

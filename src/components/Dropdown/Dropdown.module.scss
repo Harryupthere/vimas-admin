@@ -1,0 +1,59 @@
+@use '../../styles/abstracts/variables' as v;
+
+.wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  min-width: 180px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  z-index: v.$z-dropdown;
+}
+
+.left {
+  left: 0;
+}
+.right {
+  right: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  text-align: left;
+  color: var(--text-primary);
+
+  &:hover {
+    background: var(--gray-100);
+  }
+}
+
+.itemIcon {
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+}
+
+.danger {
+  color: var(--danger);
+  &:hover {
+    background: var(--danger-light);
+  }
+}
