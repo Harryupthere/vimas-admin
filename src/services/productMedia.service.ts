@@ -11,10 +11,21 @@ export interface CreateProductMediaRequest {
   sort_order?: number;
 }
 
+export type UpdateProductMediaRequest = Partial<CreateProductMediaRequest>;
+
 export const productMediaService = {
   create: async (payload: CreateProductMediaRequest): Promise<ProductMedia> => {
     const response = await apiClient.post<ApiEnvelope<ServiceResult<ProductMedia>>>(
       API_ENDPOINTS.adminProductMedia,
+      payload,
+    );
+    return unwrapData(response);
+  },
+
+  // Used for reordering (sort_order) as well as any other field edit.
+  update: async (id: number, payload: UpdateProductMediaRequest): Promise<ProductMedia> => {
+    const response = await apiClient.put<ApiEnvelope<ServiceResult<ProductMedia>>>(
+      buildUrl(API_ENDPOINTS.adminProductMediaById, { id }),
       payload,
     );
     return unwrapData(response);

@@ -101,6 +101,16 @@ export const MenuIcon = (p: IconProps) => (
   </svg>
 );
 
+export const GiftIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <rect x="3" y="8" width="18" height="4" rx="1" />
+    <rect x="5" y="12" width="14" height="9" rx="1" />
+    <path d="M12 8v13" />
+    <path d="M12 8c-1.2 0-3.5-.6-3.5-2.75A2.25 2.25 0 0 1 10.75 3C12.5 3 12 6 12 8z" />
+    <path d="M12 8c1.2 0 3.5-.6 3.5-2.75A2.25 2.25 0 0 0 13.25 3C11.5 3 12 6 12 8z" />
+  </svg>
+);
+
 export const KeyIcon = (p: IconProps) => (
   <svg {...base} {...p}>
     <circle cx="8" cy="15" r="4" />

@@ -39,13 +39,33 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
       name: product?.name ?? '',
       subTitle: product?.subTitle ?? '',
       description: product?.description ?? '',
+      information: product?.information ?? '',
+      notes: product?.notes ?? '',
+      keyPoints: product?.keyPoints?.join('\n') ?? '',
+      searchKeywords: product?.searchKeywords?.join('\n') ?? '',
+      detailsJson: product?.details ? JSON.stringify(product.details, null, 2) : '',
+
       sellingPrice: product?.sellingPrice ?? 0,
+      discountAvailable: !!product?.discountAvailable,
+      discountAmount: product?.discountAmount ?? undefined,
+      discountPercentage: product?.discountPercentage ?? undefined,
+
       stock: product?.stock ?? 0,
+      stockShow: !!product?.stockShow,
+      isOutOfStock: !!product?.isOutOfStock,
+
       categoryId: product?.category ? String(product.category.id) : '',
       brandId: product?.brand ? String(product.brand.id) : '',
+
       totalPoints: product?.totalPoints ?? undefined,
       showTotalPoints: !!product?.showTotalPoints,
       showPointsSharing: !!product?.showPointsSharing,
+
+      labelShow: !!product?.labelShow,
+      labelText: product?.labelText ?? '',
+      labelColor: product?.labelColor ?? '#000000',
+
+      bulkAvailable: !!product?.bulkAvailable,
     });
   }, [open, product, reset]);
 
@@ -67,13 +87,37 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
         name: values.name,
         subTitle: values.subTitle || undefined,
         description: values.description || undefined,
+        information: values.information || undefined,
+        notes: values.notes || undefined,
+        keyPoints: values.keyPoints
+          ? values.keyPoints.split('\n').map((l) => l.trim()).filter(Boolean)
+          : undefined,
+        searchKeywords: values.searchKeywords
+          ? values.searchKeywords.split('\n').map((l) => l.trim()).filter(Boolean)
+          : undefined,
+        details: values.detailsJson?.trim() ? JSON.parse(values.detailsJson) : undefined,
+
         sellingPrice: values.sellingPrice,
+        discountAvailable: values.discountAvailable,
+        discountAmount: values.discountAmount,
+        discountPercentage: values.discountPercentage,
+
         stock: values.stock,
+        stockShow: values.stockShow,
+        isOutOfStock: values.isOutOfStock ? 1 : 0,
+
         categoryId: Number(values.categoryId),
         brandId: values.brandId ? Number(values.brandId) : undefined,
+
         totalPoints: values.totalPoints,
         showTotalPoints: values.showTotalPoints,
         showPointsSharing: values.showPointsSharing,
+
+        labelShow: values.labelShow,
+        labelText: values.labelText || undefined,
+        labelColor: values.labelColor || undefined,
+
+        bulkAvailable: values.bulkAvailable,
       };
       if (isEdit) {
         await productsService.update(product!.id, payload);
@@ -109,10 +153,44 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
       }
     >
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
+        {isEdit && (product?.viewCount !== undefined || product?.likeCount !== undefined) && (
+          <div className={styles.statsRow}>
+            <span>👁 {product?.viewCount ?? 0} views</span>
+            <span>♥ {product?.likeCount ?? 0} likes</span>
+          </div>
+        )}
+
         <Input label="Name" required error={errors.name?.message} {...register('name')} />
         <Input label="Subtitle" error={errors.subTitle?.message} {...register('subTitle')} />
         <Textarea label="Description" error={errors.description?.message} {...register('description')} />
 
+        <div className={styles.sectionTitle}>Content</div>
+        <Textarea label="Information" error={errors.information?.message} {...register('information')} />
+        <Textarea label="Notes" error={errors.notes?.message} {...register('notes')} />
+        <div className={styles.row}>
+          <Textarea
+            label="Key Points"
+            hint="One per line."
+            error={errors.keyPoints?.message}
+            {...register('keyPoints')}
+          />
+          <Textarea
+            label="Search Keywords"
+            hint="One per line."
+            error={errors.searchKeywords?.message}
+            {...register('searchKeywords')}
+          />
+        </div>
+        <Textarea
+          label="Details (advanced)"
+          hint='Raw JSON array, e.g. [{"label":"Weight","value":"500g"}]'
+          className={styles.jsonTextarea}
+          rows={4}
+          error={errors.detailsJson?.message}
+          {...register('detailsJson')}
+        />
+
+        <div className={styles.sectionTitle}>Pricing & Stock</div>
         <div className={styles.row}>
           <Input
             label="Selling Price"
@@ -124,7 +202,38 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
           />
           <Input label="Stock" type="number" required error={errors.stock?.message} {...register('stock')} />
         </div>
+        <div className={styles.row}>
+          <Input
+            label="Discount Amount"
+            type="number"
+            step="0.01"
+            error={errors.discountAmount?.message}
+            {...register('discountAmount')}
+          />
+          <Input
+            label="Discount Percentage"
+            type="number"
+            step="0.01"
+            error={errors.discountPercentage?.message}
+            {...register('discountPercentage')}
+          />
+        </div>
+        <div className={styles.checkboxGroup}>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('discountAvailable')} />
+            Discount available
+          </label>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('stockShow')} />
+            Show stock count to buyers
+          </label>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('isOutOfStock')} />
+            Mark as out of stock
+          </label>
+        </div>
 
+        <div className={styles.sectionTitle}>Category & Brand</div>
         <div className={styles.row}>
           <Select
             label="Category"
@@ -142,6 +251,7 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
           />
         </div>
 
+        <div className={styles.sectionTitle}>Points Sharing</div>
         <Input
           label="Total Points"
           type="number"
@@ -149,15 +259,30 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
           error={errors.totalPoints?.message}
           {...register('totalPoints')}
         />
+        <div className={styles.checkboxGroup}>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('showTotalPoints')} />
+            Show total points to buyers
+          </label>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('showPointsSharing')} />
+            Show points-sharing breakdown to buyers
+          </label>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('bulkAvailable')} />
+            Available for bulk/reseller listing
+          </label>
+        </div>
 
-        <label className={styles.checkboxRow}>
-          <input type="checkbox" {...register('showTotalPoints')} />
-          Show total points to buyers
-        </label>
-        <label className={styles.checkboxRow}>
-          <input type="checkbox" {...register('showPointsSharing')} />
-          Show points-sharing breakdown to buyers
-        </label>
+        <div className={styles.sectionTitle}>Label</div>
+        <div className={styles.row3}>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('labelShow')} />
+            Show label
+          </label>
+          <Input label="Label Text" error={errors.labelText?.message} {...register('labelText')} />
+          <Input label="Label Colour" type="color" {...register('labelColor')} />
+        </div>
       </form>
     </Modal>
   );

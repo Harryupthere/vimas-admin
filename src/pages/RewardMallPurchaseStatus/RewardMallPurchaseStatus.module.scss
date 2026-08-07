@@ -1,0 +1,47 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-4;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: v.$spacing-4;
+  align-items: end;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-4;
+}
+
+.colourInput {
+  width: 56px;
+  height: 38px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 2px;
+  background: var(--bg-surface);
+  cursor: pointer;
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}
+
+.nameCell {
+  @include m.flex(center, flex-start, 8px);
+}
+
+.colourDot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}

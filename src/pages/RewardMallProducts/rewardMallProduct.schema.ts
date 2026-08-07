@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
-export const productSchema = z
+export const rewardMallProductSchema = z
   .object({
+    categoryId: z.string().min(1, 'Category is required'),
     name: z.string().min(1, 'Name is required'),
     subTitle: z.string().optional(),
     description: z.string().optional(),
@@ -11,34 +12,25 @@ export const productSchema = z
     searchKeywords: z.string().optional(), // one per line, split on submit
     detailsJson: z.string().optional(), // raw JSON array, parsed + validated on submit
 
-    sellingPrice: z.coerce.number({ invalid_type_error: 'Selling price is required' }).positive('Must be greater than 0'),
-    discountAvailable: z.boolean().optional(),
-    discountAmount: z.coerce.number().min(0).optional(),
-    discountPercentage: z.coerce.number().min(0).max(100).optional(),
+    pointPrice: z.coerce.number({ invalid_type_error: 'Point price is required' }).min(0),
+    minimumQuantity: z.coerce.number().int().min(1).optional(),
+    maximumQuantity: z.coerce.number().int().min(1).optional(),
 
-    stock: z.coerce.number({ invalid_type_error: 'Stock is required' }).min(0, 'Stock cannot be negative'),
+    stock: z.coerce.number().min(0).optional(),
     stockShow: z.boolean().optional(),
     isOutOfStock: z.boolean().optional(),
-
-    categoryId: z.string().min(1, 'Category is required'),
-    brandId: z.string().optional(),
-
-    totalPoints: z.coerce.number().optional(),
-    showTotalPoints: z.boolean().optional(),
-    showPointsSharing: z.boolean().optional(),
 
     labelShow: z.boolean().optional(),
     labelText: z.string().optional(),
     labelColor: z.string().optional(),
 
-    bulkAvailable: z.boolean().optional(),
+    sortOrder: z.coerce.number().int().min(0).optional(),
   })
   .refine(
     (values) => {
       if (!values.detailsJson || !values.detailsJson.trim()) return true;
       try {
-        const parsed = JSON.parse(values.detailsJson);
-        return Array.isArray(parsed);
+        return Array.isArray(JSON.parse(values.detailsJson));
       } catch {
         return false;
       }
@@ -46,4 +38,4 @@ export const productSchema = z
     { message: 'Must be a valid JSON array, e.g. [{"label":"Weight","value":"500g"}]', path: ['detailsJson'] },
   );
 
-export type ProductFormValues = z.infer<typeof productSchema>;
+export type RewardMallProductFormValues = z.infer<typeof rewardMallProductSchema>;

@@ -5,13 +5,13 @@ import { Button } from '../../components/Button';
 import { Loader } from '../../components/Loader';
 import { Modal } from '../../components/Modal';
 import { toApiError } from '../../services/api';
-import { productMediaService } from '../../services/productMedia.service';
-import { productsService } from '../../services/products.service';
+import { rewardMallProductMediaService } from '../../services/rewardMallProductMedia.service';
+import { rewardMallProductsService } from '../../services/rewardMallProducts.service';
 import { uploadService } from '../../services/upload.service';
-import type { ProductMedia } from '../../types/product.types';
-import styles from './Products.module.scss';
+import type { RewardMallProductMedia } from '../../types/rewardMallProduct.types';
+import styles from './RewardMallProducts.module.scss';
 
-export interface ProductMediaModalProps {
+export interface RewardMallProductMediaModalProps {
   productId: number | null;
   onClose: () => void;
 }
@@ -34,42 +34,45 @@ function inferMediaType(file: File): 'image' | 'video' {
 }
 
 // There's no GET-media-by-product endpoint — media is only ever available
-// embedded in the product's own `productMedia` relation, so this modal
-// re-fetches the product itself after every add/remove/reorder.
-export function ProductMediaModal({ productId, onClose }: ProductMediaModalProps) {
+// embedded in the product's own `media` relation, so this modal re-fetches
+// the product itself after every add/remove/reorder (same pattern as the
+// regular catalog Product's media modal, just camelCase field names here).
+export function RewardMallProductMediaModal({ productId, onClose }: RewardMallProductMediaModalProps) {
   const queryClient = useQueryClient();
   const open = productId !== null;
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [orderedMedia, setOrderedMedia] = useState<ProductMedia[]>([]);
+  const [orderedMedia, setOrderedMedia] = useState<RewardMallProductMedia[]>([]);
   const [uploads, setUploads] = useState<UploadTask[]>([]);
   const [isDropzoneActive, setIsDropzoneActive] = useState(false);
   const dragFromIndex = useRef<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   const productQuery = useQuery({
-    queryKey: ['products', 'detail', productId],
-    queryFn: () => productsService.getById(productId as number),
+    queryKey: ['rewardMallProducts', 'detail', productId],
+    queryFn: () => rewardMallProductsService.getById(productId as number),
     enabled: open,
   });
 
   useEffect(() => {
-    const media = productQuery.data?.productMedia ?? [];
-    setOrderedMedia([...media].sort((a, b) => a.sort_order - b.sort_order));
+    const media = productQuery.data?.media ?? [];
+    setOrderedMedia([...media].sort((a, b) => a.sortOrder - b.sortOrder));
   }, [productQuery.data]);
 
-  const invalidate = () => queryClient.invalidateQueries({ queryKey: ['products', 'detail', productId] });
+  const invalidate = () => queryClient.invalidateQueries({ queryKey: ['rewardMallProducts', 'detail', productId] });
 
   const removeMutation = useMutation({
-    mutationFn: (id: number) => productMediaService.remove(id),
+    mutationFn: (id: number) => rewardMallProductMediaService.remove(id),
     onSuccess: invalidate,
     onError: (err) => toast.error(toApiError(err).message),
   });
 
   const reorderMutation = useMutation({
-    mutationFn: async (items: ProductMedia[]) => {
-      const changed = items.filter((item, index) => item.sort_order !== index);
-      await Promise.all(changed.map((item) => productMediaService.update(item.id, { sort_order: items.indexOf(item) })));
+    mutationFn: async (items: RewardMallProductMedia[]) => {
+      const changed = items.filter((item, index) => item.sortOrder !== index);
+      await Promise.all(
+        changed.map((item) => rewardMallProductMediaService.update(item.id, { sortOrder: items.indexOf(item) })),
+      );
     },
     onSuccess: invalidate,
     onError: (err) => {
@@ -102,11 +105,11 @@ export function ProductMediaModal({ productId, onClose }: ProductMediaModalProps
       try {
         const { uploadUrl, fileUrl } = await uploadService.getPresignedUrl(file.name, file.type);
         await uploadService.uploadToS3(uploadUrl, file);
-        await productMediaService.create({
-          product_id: productId,
-          media_url: fileUrl,
-          media_type: inferMediaType(file),
-          sort_order: startingSortOrder + i,
+        await rewardMallProductMediaService.create({
+          rewardMallProductId: Number(productId),
+          mediaUrl: fileUrl,
+          mediaType: inferMediaType(file),
+          sortOrder: startingSortOrder + i,
         });
         setUploads((prev) => prev.filter((u) => u.id !== task.id));
         invalidate();
@@ -147,7 +150,7 @@ export function ProductMediaModal({ productId, onClose }: ProductMediaModalProps
   };
 
   return (
-    <Modal open={open} onClose={handleClose} title="Manage Product Media" size="md">
+    <Modal open={open} onClose={handleClose} title="Manage Reward Product Media" size="md">
       {productQuery.isLoading ? (
         <Loader />
       ) : (
@@ -176,10 +179,10 @@ export function ProductMediaModal({ productId, onClose }: ProductMediaModalProps
                     }}
                   >
                     <span className={styles.mediaOrderBadge}>{index + 1}</span>
-                    {media.media_type === 'image' ? (
-                      <img src={media.media_url} alt="" className={styles.mediaImg} />
+                    {media.mediaType === 'image' ? (
+                      <img src={media.mediaUrl} alt="" className={styles.mediaImg} />
                     ) : (
-                      <video src={media.media_url} className={styles.mediaImg} />
+                      <video src={media.mediaUrl} className={styles.mediaImg} />
                     )}
                     <button
                       type="button"

@@ -1,7 +1,7 @@
-// Matches Backend/src/products/dto/create-product.dto.ts +
-// Backend/src/shared/entities/products.entity.ts. GET /admin/products only
-// accepts page/limit (Backend/src/products/admin/product.controller.ts) —
-// no search/filter params exist yet.
+// Matches Vimas-Backend-V1/src/products/dto/create-product.dto.ts +
+// Vimas-Backend-V1/src/shared/entities/products.entity.ts. GET /admin/products
+// only accepts page/limit (Vimas-Backend-V1/src/products/admin/product.controller.ts)
+// — no search/filter params exist yet.
 
 export interface CategoryRef {
   id: number;
@@ -47,11 +47,18 @@ export interface Product {
   labelShow?: number;
   labelText?: string;
   labelColor?: string;
+  categoryId?: number;
+  brandId?: number;
+  viewCount?: number;
+  likeCount?: number;
   status?: number;
+  // Gates the reseller product listing (GET /products?type=reseller).
+  bulkAvailable?: number;
   category?: CategoryRef;
   brand?: BrandRef;
   productMedia?: ProductMedia[];
   created_at?: string;
+  updatedAt?: string;
 }
 
 export interface ProductListParams {
@@ -85,6 +92,8 @@ export interface CreateProductRequest {
   categoryId: number;
   brandId?: number;
   status?: string;
+  // Gates the reseller product listing (GET /products?type=reseller).
+  bulkAvailable?: boolean;
 }
 
 export type UpdateProductRequest = Partial<CreateProductRequest>;

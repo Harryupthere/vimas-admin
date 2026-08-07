@@ -1,6 +1,16 @@
 @use '../../styles/abstracts/mixins' as m;
 @use '../../styles/abstracts/variables' as v;
 
+.filters {
+  @include m.flex(center, flex-start, v.$spacing-3);
+  margin-bottom: v.$spacing-4;
+  flex-wrap: wrap;
+}
+
+.filterSelect {
+  width: 180px;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -43,15 +53,6 @@
   font-size: 12px;
 }
 
-.statsRow {
-  @include m.flex(center, flex-start, v.$spacing-5);
-  padding: v.$spacing-3 v.$spacing-4;
-  background: var(--gray-50);
-  border-radius: var(--radius-md);
-  font-size: v.$font-size-sm;
-  color: var(--text-secondary);
-}
-
 .actions {
   @include m.flex(center, flex-end, v.$spacing-2);
 }
@@ -72,6 +73,7 @@
   color: var(--text-secondary);
 }
 
+// ── Media modal ──────────────────────────────────────────────
 .mediaGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));

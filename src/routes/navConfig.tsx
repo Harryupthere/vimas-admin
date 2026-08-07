@@ -3,6 +3,7 @@ import {
   CartIcon,
   CoinsIcon,
   DashboardIcon,
+  GiftIcon,
   ReportIcon,
   SettingsIcon,
   UserCircleIcon,
@@ -60,6 +61,16 @@ export const NAV_ITEMS: NavGroup[] = [
       { label: 'Point Pool Details', path: '/points/pool-details' },
       { label: 'Point Transactions', path: '/points/transactions' },
       { label: 'Point Wallets', path: '/points/wallets' },
+    ],
+  },
+  {
+    label: 'Reward Mall',
+    icon: GiftIcon,
+    children: [
+      { label: 'Categories', path: '/reward-mall/categories' },
+      { label: 'Products', path: '/reward-mall/products' },
+      { label: 'Purchase Status', path: '/reward-mall/purchase-status' },
+      { label: 'Purchases', path: '/reward-mall/purchases' },
     ],
   },
   {

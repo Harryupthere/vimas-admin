@@ -26,6 +26,10 @@ const PointPoolsPage = lazy(() => import('../pages/PointPools'));
 const PointPoolDetailsPage = lazy(() => import('../pages/PointPoolDetails'));
 const PointTransactionsPage = lazy(() => import('../pages/PointTransactions'));
 const PointWalletsPage = lazy(() => import('../pages/PointWallets'));
+const RewardMallCategoriesPage = lazy(() => import('../pages/RewardMallCategories'));
+const RewardMallProductsPage = lazy(() => import('../pages/RewardMallProducts'));
+const RewardMallPurchaseStatusPage = lazy(() => import('../pages/RewardMallPurchaseStatus'));
+const RewardMallPurchasesPage = lazy(() => import('../pages/RewardMallPurchases'));
 const UserTypesPage = lazy(() => import('../pages/UserTypes'));
 const MembershipTypesPage = lazy(() => import('../pages/MembershipTypes'));
 const RegistrationTypesPage = lazy(() => import('../pages/RegistrationTypes'));
@@ -87,6 +91,10 @@ export function AppRouter() {
           <Route path="points/pool-details" element={<PointPoolDetailsPage />} />
           <Route path="points/transactions" element={<PointTransactionsPage />} />
           <Route path="points/wallets" element={<PointWalletsPage />} />
+          <Route path="reward-mall/categories" element={<RewardMallCategoriesPage />} />
+          <Route path="reward-mall/products" element={<RewardMallProductsPage />} />
+          <Route path="reward-mall/purchase-status" element={<RewardMallPurchaseStatusPage />} />
+          <Route path="reward-mall/purchases" element={<RewardMallPurchasesPage />} />
           <Route path="configuration/user-types" element={<UserTypesPage />} />
           <Route path="configuration/membership-types" element={<MembershipTypesPage />} />
           <Route path="configuration/registration-types" element={<RegistrationTypesPage />} />

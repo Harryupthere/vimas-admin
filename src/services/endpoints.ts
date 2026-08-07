@@ -5,6 +5,10 @@
 // refresh token, product images, reports, generic settings).
 
 export const API_ENDPOINTS = {
+  // Upload (S3 presigned URLs) — not under /admin, and not role-gated
+  // (any authenticated token works). See Backend/src/upload/upload.controller.ts.
+  uploadPresignedUrl: '/upload/presigned-url',
+
   // Auth
   adminLogin: '/admin/login',
   adminRefreshToken: '/admin/refresh-token',
@@ -108,4 +112,24 @@ export const API_ENDPOINTS = {
   // Point Transactions
   adminPointTransaction: '/admin/point-transaction',
   adminPointTransactionById: '/admin/point-transaction/:id',
+
+  // Reward Mall Categories
+  adminRewardMallCategories: '/admin/reward-mall-categories',
+  adminRewardMallCategoryById: '/admin/reward-mall-categories/:id',
+
+  // Reward Mall Products
+  adminRewardMallProducts: '/admin/reward-mall-products',
+  adminRewardMallProductById: '/admin/reward-mall-products/:id',
+
+  // Reward Mall Product Media
+  adminRewardMallProductMedia: '/admin/reward-mall-product-media',
+  adminRewardMallProductMediaById: '/admin/reward-mall-product-media/:id',
+
+  // Reward Mall Purchase Status
+  adminRewardMallPurchaseStatus: '/admin/reward-mall-purchase-status',
+  adminRewardMallPurchaseStatusById: '/admin/reward-mall-purchase-status/:id',
+
+  // Reward Mall Purchases
+  adminRewardMallPurchases: '/admin/reward-mall-purchases',
+  adminRewardMallPurchaseById: '/admin/reward-mall-purchases/:id',
 } as const;
