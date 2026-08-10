@@ -93,9 +93,9 @@ function UserBalancesTab() {
 
   return (
     <>
-      <div className={styles.toolbar}>
+      {/* <div className={styles.toolbar}>
         <Button onClick={() => setCreating(true)}>Add User Balance</Button>
-      </div>
+      </div> */}
 
       <Table
         columns={columns}
