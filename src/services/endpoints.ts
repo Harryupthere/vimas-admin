@@ -132,4 +132,17 @@ export const API_ENDPOINTS = {
   // Reward Mall Purchases
   adminRewardMallPurchases: '/admin/reward-mall-purchases',
   adminRewardMallPurchaseById: '/admin/reward-mall-purchases/:id',
+
+  // Notification Categories
+  adminNotificationCategories: '/admin/notification-categories',
+  adminNotificationCategoryById: '/admin/notification-categories/:id',
+
+  // Notification Types
+  adminNotificationTypes: '/admin/notification-types',
+  adminNotificationTypeById: '/admin/notification-types/:id',
+
+  // Notifications
+  adminNotifications: '/admin/notifications',
+  adminNotificationById: '/admin/notifications/:id',
+  adminNotificationHide: '/admin/notifications/:id/hide',
 } as const;

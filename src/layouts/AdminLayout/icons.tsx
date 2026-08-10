@@ -111,6 +111,13 @@ export const GiftIcon = (p: IconProps) => (
   </svg>
 );
 
+export const BellIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M6 8a6 6 0 1 1 12 0c0 4.5 1.5 6 2 7H4c.5-1 2-2.5 2-7z" />
+    <path d="M10 20a2 2 0 0 0 4 0" />
+  </svg>
+);
+
 export const KeyIcon = (p: IconProps) => (
   <svg {...base} {...p}>
     <circle cx="8" cy="15" r="4" />

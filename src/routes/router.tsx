@@ -30,6 +30,9 @@ const RewardMallCategoriesPage = lazy(() => import('../pages/RewardMallCategorie
 const RewardMallProductsPage = lazy(() => import('../pages/RewardMallProducts'));
 const RewardMallPurchaseStatusPage = lazy(() => import('../pages/RewardMallPurchaseStatus'));
 const RewardMallPurchasesPage = lazy(() => import('../pages/RewardMallPurchases'));
+const NotificationsPage = lazy(() => import('../pages/Notifications'));
+const NotificationCategoriesPage = lazy(() => import('../pages/NotificationCategories'));
+const NotificationTypesPage = lazy(() => import('../pages/NotificationTypes'));
 const UserTypesPage = lazy(() => import('../pages/UserTypes'));
 const MembershipTypesPage = lazy(() => import('../pages/MembershipTypes'));
 const RegistrationTypesPage = lazy(() => import('../pages/RegistrationTypes'));
@@ -95,6 +98,9 @@ export function AppRouter() {
           <Route path="reward-mall/products" element={<RewardMallProductsPage />} />
           <Route path="reward-mall/purchase-status" element={<RewardMallPurchaseStatusPage />} />
           <Route path="reward-mall/purchases" element={<RewardMallPurchasesPage />} />
+          <Route path="notifications" element={<NotificationsPage />} />
+          <Route path="notifications/categories" element={<NotificationCategoriesPage />} />
+          <Route path="notifications/types" element={<NotificationTypesPage />} />
           <Route path="configuration/user-types" element={<UserTypesPage />} />
           <Route path="configuration/membership-types" element={<MembershipTypesPage />} />
           <Route path="configuration/registration-types" element={<RegistrationTypesPage />} />

@@ -1,0 +1,76 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.filters {
+  @include m.flex(center, flex-start, v.$spacing-3);
+  margin-bottom: v.$spacing-4;
+  flex-wrap: wrap;
+}
+
+.filterSelect {
+  width: 170px;
+}
+
+.filterInput {
+  width: 140px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-4;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-4;
+}
+
+.jsonTextarea {
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 12px;
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+}
+
+.radioGroup {
+  @include m.flex(center, flex-start, v.$spacing-5);
+}
+
+.radioRow {
+  @include m.flex(center, flex-start, v.$spacing-2);
+  font-size: v.$font-size-sm;
+  color: var(--text-primary);
+}
+
+.notificationCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: 260px;
+}
+
+.notificationHeading {
+  font-weight: 500;
+  color: var(--text-primary);
+  @include m.truncate;
+}
+
+.notificationSub {
+  font-size: v.$font-size-xs;
+  color: var(--text-secondary);
+  @include m.truncate;
+}
+
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}

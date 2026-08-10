@@ -1,4 +1,5 @@
 import {
+  BellIcon,
   BoxIcon,
   CartIcon,
   CoinsIcon,
@@ -71,6 +72,15 @@ export const NAV_ITEMS: NavGroup[] = [
       { label: 'Products', path: '/reward-mall/products' },
       { label: 'Purchase Status', path: '/reward-mall/purchase-status' },
       { label: 'Purchases', path: '/reward-mall/purchases' },
+    ],
+  },
+  {
+    label: 'Notifications',
+    icon: BellIcon,
+    children: [
+      { label: 'Notifications', path: '/notifications' },
+      { label: 'Categories', path: '/notifications/categories' },
+      { label: 'Types', path: '/notifications/types' },
     ],
   },
   {
