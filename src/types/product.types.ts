@@ -3,6 +3,8 @@
 // only accepts page/limit (Vimas-Backend-V1/src/products/admin/product.controller.ts)
 // — no search/filter params exist yet.
 
+import type { ProductPaymentOption } from './productPaymentOption.types';
+
 export interface CategoryRef {
   id: number;
   name: string;
@@ -57,6 +59,10 @@ export interface Product {
   category?: CategoryRef;
   brand?: BrandRef;
   productMedia?: ProductMedia[];
+  // Populated on findOne/findAll via the `paymentOptions.paymentOption`
+  // relation — see productPaymentOption.types.ts for why there's no
+  // dedicated list/remove endpoint for these mappings.
+  paymentOptions?: ProductPaymentOption[];
   created_at?: string;
   updatedAt?: string;
 }

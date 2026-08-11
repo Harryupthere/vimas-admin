@@ -13,6 +13,7 @@ import type { Product } from '../../types/product.types';
 import { formatCurrency } from '../../utils/formatters';
 import { ProductFormModal } from './ProductFormModal';
 import { ProductMediaModal } from './ProductMediaModal';
+import { ProductPaymentOptionsModal } from './ProductPaymentOptionsModal';
 import styles from './Products.module.scss';
 
 const LIMIT = 10;
@@ -24,6 +25,7 @@ export default function ProductsPage() {
   const [page, setPage] = useState(1);
   const [editingProduct, setEditingProduct] = useState<Product | null | undefined>(undefined);
   const [mediaProductId, setMediaProductId] = useState<number | null>(null);
+  const [paymentOptionsProductId, setPaymentOptionsProductId] = useState<number | null>(null);
   const [pendingAction, setPendingAction] = useState<PendingAction | null>(null);
 
   const productsQuery = useQuery({
@@ -79,6 +81,9 @@ export default function ProductsPage() {
         <div className={styles.actions}>
           <Button variant="ghost" size="sm" onClick={() => setMediaProductId(p.id)}>
             Media
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => setPaymentOptionsProductId(p.id)}>
+            Payment Options
           </Button>
           <Button variant="ghost" size="sm" onClick={() => setEditingProduct(p)}>
             Edit
@@ -141,6 +146,11 @@ export default function ProductsPage() {
       />
 
       <ProductMediaModal productId={mediaProductId} onClose={() => setMediaProductId(null)} />
+
+      <ProductPaymentOptionsModal
+        productId={paymentOptionsProductId}
+        onClose={() => setPaymentOptionsProductId(null)}
+      />
 
       <ConfirmDialog
         open={pendingAction !== null}

@@ -5,13 +5,14 @@ import type { ApiEnvelope, ServiceResult } from '../types/api.types';
 import type {
   CreatePaymentOptionRequest,
   PaymentOption,
+  PaymentOptionListParams,
   UpdatePaymentOptionRequest,
 } from '../types/paymentOption.types';
 
 export const paymentOptionsService = {
-  list: async (): Promise<PaymentOption[]> => {
+  list: async (params: PaymentOptionListParams = {}): Promise<PaymentOption[]> => {
     const response = await apiClient.get<ApiEnvelope<ServiceResult<PaymentOption[]>>>(
-      API_ENDPOINTS.adminPaymentOptions,
+      buildUrl(API_ENDPOINTS.adminPaymentOptions, params),
     );
     return unwrapData(response);
   },
@@ -24,12 +25,15 @@ export const paymentOptionsService = {
     return unwrapData(response);
   },
 
-  // NOTE: PaymentOptionsService.update() (backend) returns `data: this.findOne(id)`
-  // without awaiting the promise, so the response body's `data` is useless —
-  // the update itself still applies. We refetch the list afterward instead of
-  // trusting this call's return value.
-  update: async (id: number, payload: UpdatePaymentOptionRequest): Promise<void> => {
-    await apiClient.put(buildUrl(API_ENDPOINTS.adminPaymentOptionById, { id }), payload);
+  // PaymentOptionsService.update() now correctly awaits and returns the
+  // saved row (the earlier un-awaited-promise bug here has been fixed
+  // server-side), so this is a normal PUT + real response.
+  update: async (id: number, payload: UpdatePaymentOptionRequest): Promise<PaymentOption> => {
+    const response = await apiClient.put<ApiEnvelope<ServiceResult<PaymentOption>>>(
+      buildUrl(API_ENDPOINTS.adminPaymentOptionById, { id }),
+      payload,
+    );
+    return unwrapData(response);
   },
 
   remove: async (id: number): Promise<void> => {

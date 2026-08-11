@@ -190,3 +190,54 @@
   @include m.truncate;
   flex: 1;
 }
+
+// ── Payment options modal ────────────────────────────────────
+.mappedList {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-2;
+  margin-bottom: v.$spacing-4;
+}
+
+.mappedItem {
+  @include m.flex(center, space-between);
+  padding: v.$spacing-3;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: v.$font-size-sm;
+}
+
+.mappedItemName {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.mappedItemCharges {
+  font-size: v.$font-size-xs;
+  color: var(--text-secondary);
+}
+
+.mappedItemRemove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  font-size: 16px;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--danger-light);
+    color: var(--danger);
+  }
+}
+
+.addMappingRow {
+  @include m.flex(center, flex-start, v.$spacing-2);
+}
+
+.addMappingSelect {
+  flex: 1;
+}

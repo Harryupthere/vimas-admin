@@ -4,7 +4,11 @@ import { toast } from 'react-toastify';
 import { Button } from '../../components/Button';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { PageHeader } from '../../components/PageHeader';
+import { SearchInput } from '../../components/SearchInput';
+import { Select } from '../../components/Select';
+import { StatusBadge, statusToneFromFlag } from '../../components/StatusBadge';
 import { Table, type TableColumn } from '../../components/Table';
+import { useDebouncedValue } from '../../hooks/useDebouncedValue';
 import { toApiError } from '../../services/api';
 import { paymentOptionsService } from '../../services/paymentOptions.service';
 import type { PaymentOption } from '../../types/paymentOption.types';
@@ -14,12 +18,15 @@ import styles from './PaymentOptions.module.scss';
 
 export default function PaymentOptionsPage() {
   const queryClient = useQueryClient();
+  const [search, setSearch] = useState('');
+  const [status, setStatus] = useState('');
+  const debouncedSearch = useDebouncedValue(search);
   const [editing, setEditing] = useState<PaymentOption | null | undefined>(undefined);
   const [deleting, setDeleting] = useState<PaymentOption | null>(null);
 
   const optionsQuery = useQuery({
-    queryKey: ['paymentOptions'],
-    queryFn: () => paymentOptionsService.list(),
+    queryKey: ['paymentOptions', debouncedSearch, status],
+    queryFn: () => paymentOptionsService.list({ search: debouncedSearch || undefined, status: status !== '' ? Number(status) : undefined }),
   });
 
   const deleteMutation = useMutation({
@@ -52,6 +59,11 @@ export default function PaymentOptionsPage() {
         ),
     },
     {
+      key: 'status',
+      label: 'Status',
+      render: (o) => <StatusBadge label={o.status ? 'Active' : 'Inactive'} tone={statusToneFromFlag(o.status)} />,
+    },
+    {
       key: 'actions',
       label: '',
       align: 'right',
@@ -75,6 +87,21 @@ export default function PaymentOptionsPage() {
         description="Manage the payment methods buyers can choose at checkout."
         actions={<Button onClick={() => setEditing(null)}>Add Payment Option</Button>}
       />
+
+      <div className={styles.filters}>
+        <SearchInput value={search} onChange={setSearch} placeholder="Search payment options…" />
+        <div className={styles.filterSelect}>
+          <Select
+            placeholder="All statuses"
+            options={[
+              { value: '1', label: 'Active' },
+              { value: '0', label: 'Inactive' },
+            ]}
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          />
+        </div>
+      </div>
 
       <Table
         columns={columns}

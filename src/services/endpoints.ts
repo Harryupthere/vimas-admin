@@ -37,6 +37,7 @@ export const API_ENDPOINTS = {
   adminProductMedia: '/admin/product-media',
   adminProductMediaById: '/admin/product-media/:id',
   adminProductPaymentOption: '/admin/product-payment-option',
+  adminProductPaymentOptionById: '/admin/product-payment-option/:id',
 
   // Product Bulk Details (bulk/package pricing tiers per product)
   adminProductBulkDetails: '/admin/product-bulk-details',

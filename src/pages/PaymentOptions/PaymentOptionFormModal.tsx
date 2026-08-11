@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Modal } from '../../components/Modal';
+import { Select } from '../../components/Select';
 import { Textarea } from '../../components/Textarea';
 import { toApiError } from '../../services/api';
 import { paymentOptionsService } from '../../services/paymentOptions.service';
@@ -37,6 +38,7 @@ export function PaymentOptionFormModal({ open, option, onClose }: PaymentOptionF
         description: option?.description ?? '',
         charges: option?.charges ?? 0,
         note: option?.note?.join('\n') ?? '',
+        status: option?.status ?? 1,
       });
     }
   }, [open, option, reset]);
@@ -50,6 +52,7 @@ export function PaymentOptionFormModal({ open, option, onClose }: PaymentOptionF
         note: values.note
           ? values.note.split('\n').map((line) => line.trim()).filter(Boolean)
           : [],
+        status: values.status,
       };
       if (isEdit) {
         await paymentOptionsService.update(option!.id, payload);
@@ -85,7 +88,17 @@ export function PaymentOptionFormModal({ open, option, onClose }: PaymentOptionF
       <form className={styles.form} onSubmit={handleSubmit((v) => mutation.mutate(v))} noValidate>
         <Input label="Name" required error={errors.name?.message} {...register('name')} />
         <Textarea label="Description" required error={errors.description?.message} {...register('description')} />
-        <Input label="Charges" type="number" step="0.01" error={errors.charges?.message} {...register('charges')} />
+        <div className={styles.row}>
+          <Input label="Charges" type="number" step="0.01" error={errors.charges?.message} {...register('charges')} />
+          <Select
+            label="Status"
+            options={[
+              { value: '1', label: 'Active' },
+              { value: '0', label: 'Inactive' },
+            ]}
+            {...register('status')}
+          />
+        </div>
         <Textarea
           label="Notes"
           hint="One note per line."
