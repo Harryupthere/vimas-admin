@@ -32,6 +32,10 @@ export const productSchema = z
     labelColor: z.string().optional(),
 
     bulkAvailable: z.boolean().optional(),
+    consumerAvailable: z.boolean().optional(),
+    partnerAvailable: z.boolean().optional(),
+    partnerMinimumQuantity: z.coerce.number().min(1, 'Must be at least 1').optional(),
+    partnerMaximumQuantity: z.coerce.number().min(1, 'Must be at least 1').optional(),
   })
   .refine(
     (values) => {
@@ -44,6 +48,13 @@ export const productSchema = z
       }
     },
     { message: 'Must be a valid JSON array, e.g. [{"label":"Weight","value":"500g"}]', path: ['detailsJson'] },
+  )
+  .refine(
+    (values) =>
+      values.partnerMinimumQuantity === undefined ||
+      values.partnerMaximumQuantity === undefined ||
+      values.partnerMinimumQuantity <= values.partnerMaximumQuantity,
+    { message: 'Must be greater than or equal to minimum quantity', path: ['partnerMaximumQuantity'] },
   );
 
 export type ProductFormValues = z.infer<typeof productSchema>;

@@ -66,6 +66,12 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
       labelColor: product?.labelColor ?? '#000000',
 
       bulkAvailable: !!product?.bulkAvailable,
+      // Entity defaults these two to 1 (available), unlike bulkAvailable's 0 —
+      // so a new product starts with both checked, matching the DB default.
+      consumerAvailable: product ? !!product.consumerAvailable : true,
+      partnerAvailable: product ? !!product.partnerAvailable : true,
+      partnerMinimumQuantity: product?.partnerMinimumQuantity ?? 1,
+      partnerMaximumQuantity: product?.partnerMaximumQuantity ?? 1,
     });
   }, [open, product, reset]);
 
@@ -118,6 +124,10 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
         labelColor: values.labelColor || undefined,
 
         bulkAvailable: values.bulkAvailable,
+        consumerAvailable: values.consumerAvailable,
+        partnerAvailable: values.partnerAvailable,
+        partnerMinimumQuantity: values.partnerMinimumQuantity,
+        partnerMaximumQuantity: values.partnerMaximumQuantity,
       };
       if (isEdit) {
         await productsService.update(product!.id, payload);
@@ -272,6 +282,28 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
             <input type="checkbox" {...register('bulkAvailable')} />
             Available for bulk/reseller listing
           </label>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('consumerAvailable')} />
+            Available for consumer listing
+          </label>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('partnerAvailable')} />
+            Available for partner listing
+          </label>
+        </div>
+        <div className={styles.row}>
+          <Input
+            label="Partner Minimum Quantity"
+            type="number"
+            error={errors.partnerMinimumQuantity?.message}
+            {...register('partnerMinimumQuantity')}
+          />
+          <Input
+            label="Partner Maximum Quantity"
+            type="number"
+            error={errors.partnerMaximumQuantity?.message}
+            {...register('partnerMaximumQuantity')}
+          />
         </div>
 
         <div className={styles.sectionTitle}>Label</div>

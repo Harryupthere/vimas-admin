@@ -56,6 +56,12 @@ export interface Product {
   status?: number;
   // Gates the reseller product listing (GET /products?type=reseller).
   bulkAvailable?: number;
+  // Gates the consumer product listing (GET /products?type=consumer).
+  consumerAvailable?: number;
+  // Gates the partner product listing (GET /products?type=partner).
+  partnerAvailable?: number;
+  partnerMinimumQuantity?: number;
+  partnerMaximumQuantity?: number;
   category?: CategoryRef;
   brand?: BrandRef;
   productMedia?: ProductMedia[];
@@ -100,6 +106,12 @@ export interface CreateProductRequest {
   status?: string;
   // Gates the reseller product listing (GET /products?type=reseller).
   bulkAvailable?: boolean;
+  // Gates the consumer product listing (GET /products?type=consumer).
+  consumerAvailable?: boolean;
+  // Gates the partner product listing (GET /products?type=partner).
+  partnerAvailable?: boolean;
+  partnerMinimumQuantity?: number;
+  partnerMaximumQuantity?: number;
 }
 
 export type UpdateProductRequest = Partial<CreateProductRequest>;
