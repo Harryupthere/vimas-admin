@@ -111,6 +111,14 @@ export const GiftIcon = (p: IconProps) => (
   </svg>
 );
 
+export const WalletIcon = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    <path d="M3 10h15a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" />
+    <circle cx="16" cy="13" r="1" fill="currentColor" stroke="none" />
+  </svg>
+);
+
 export const BellIcon = (p: IconProps) => (
   <svg {...base} {...p}>
     <path d="M6 8a6 6 0 1 1 12 0c0 4.5 1.5 6 2 7H4c.5-1 2-2.5 2-7z" />

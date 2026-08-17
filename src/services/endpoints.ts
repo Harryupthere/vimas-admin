@@ -43,6 +43,22 @@ export const API_ENDPOINTS = {
   adminProductBulkDetails: '/admin/product-bulk-details',
   adminProductBulkDetailById: '/admin/product-bulk-details/:id',
 
+  // Product Extra Charges (per-product-type additional fees)
+  adminProductExtraCharges: '/admin/product-extra-charges',
+  adminProductExtraChargeById: '/admin/product-extra-charges/:id',
+
+  // Product Add-Ons (per-product-type optional add-ons)
+  adminProductAddOns: '/admin/product-add-ons',
+  adminProductAddOnById: '/admin/product-add-ons/:id',
+
+  // Product Coupons (per-product-type code-based discounts)
+  adminProductCoupons: '/admin/product-coupons',
+  adminProductCouponById: '/admin/product-coupons/:id',
+
+  // Product Discounts (per-product-type automatic discounts)
+  adminProductDiscounts: '/admin/product-discounts',
+  adminProductDiscountById: '/admin/product-discounts/:id',
+
   // Product Feedback
   adminProductFeedback: '/admin/product-feedback',
   adminProductFeedbackById: '/admin/product-feedback/:id',
@@ -93,6 +109,14 @@ export const API_ENDPOINTS = {
   // Point Distribution
   adminPointDistribution: '/admin/point-distribution',
   adminPointDistributionById: '/admin/point-distribution/:id',
+
+  // Vimas E-Wallet (per-user store credit usable at checkout)
+  adminWallet: '/admin/wallet',
+  adminWalletById: '/admin/wallet/:userId',
+  adminWalletTransactions: '/admin/wallet/:userId/transactions',
+  adminWalletStatus: '/admin/wallet/:userId/status',
+  adminWalletCredit: '/admin/wallet/:userId/credit',
+  adminWalletDebit: '/admin/wallet/:userId/debit',
 
   // Point User Balances
   adminPointUserBalance: '/admin/point-user-balance',

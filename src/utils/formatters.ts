@@ -20,5 +20,5 @@ export function formatDateTime(value?: string | Date | null): string {
 
 export function formatCurrency(value?: number | null): string {
   if (value === undefined || value === null) return '—';
-  return `₹${Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  return `MYR${Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }

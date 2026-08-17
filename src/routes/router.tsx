@@ -13,6 +13,10 @@ const CategoriesPage = lazy(() => import('../pages/Categories'));
 const BrandsPage = lazy(() => import('../pages/Brands'));
 const ProductsPage = lazy(() => import('../pages/Products'));
 const ProductBulkDetailsPage = lazy(() => import('../pages/ProductBulkDetails'));
+const ProductExtraChargesPage = lazy(() => import('../pages/ProductExtraCharges'));
+const ProductAddOnsPage = lazy(() => import('../pages/ProductAddOns'));
+const ProductCouponsPage = lazy(() => import('../pages/ProductCoupons'));
+const ProductDiscountsPage = lazy(() => import('../pages/ProductDiscounts'));
 const ProductActionsPage = lazy(() => import('../pages/ProductActions'));
 const ProductFeedbackPage = lazy(() => import('../pages/ProductFeedback'));
 const ReviewRatingPage = lazy(() => import('../pages/ReviewRating'));
@@ -26,6 +30,7 @@ const PointPoolsPage = lazy(() => import('../pages/PointPools'));
 const PointPoolDetailsPage = lazy(() => import('../pages/PointPoolDetails'));
 const PointTransactionsPage = lazy(() => import('../pages/PointTransactions'));
 const PointWalletsPage = lazy(() => import('../pages/PointWallets'));
+const WalletPage = lazy(() => import('../pages/Wallet'));
 const RewardMallCategoriesPage = lazy(() => import('../pages/RewardMallCategories'));
 const RewardMallProductsPage = lazy(() => import('../pages/RewardMallProducts'));
 const RewardMallPurchaseStatusPage = lazy(() => import('../pages/RewardMallPurchaseStatus'));
@@ -81,10 +86,15 @@ export function AppRouter() {
           <Route path="catalog/brands" element={<BrandsPage />} />
           <Route path="catalog/products" element={<ProductsPage />} />
           <Route path="catalog/product-bulk-details" element={<ProductBulkDetailsPage />} />
+          <Route path="catalog/product-extra-charges" element={<ProductExtraChargesPage />} />
+          <Route path="catalog/product-add-ons" element={<ProductAddOnsPage />} />
+          <Route path="catalog/product-coupons" element={<ProductCouponsPage />} />
+          <Route path="catalog/product-discounts" element={<ProductDiscountsPage />} />
           <Route path="catalog/product-actions" element={<ProductActionsPage />} />
           <Route path="catalog/product-feedback" element={<ProductFeedbackPage />} />
           <Route path="catalog/review-rating" element={<ReviewRatingPage />} />
           <Route path="catalog/product-history" element={<ProductHistoryPage />} />
+          <Route path="wallet" element={<WalletPage />} />
           <Route path="orders" element={<OrdersPage />} />
           <Route path="orders/order-status" element={<OrderStatusPage />} />
           <Route path="orders/payment-status" element={<PaymentStatusPage />} />

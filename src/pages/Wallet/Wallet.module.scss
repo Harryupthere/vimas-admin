@@ -1,0 +1,80 @@
+@use '../../styles/abstracts/mixins' as m;
+@use '../../styles/abstracts/variables' as v;
+
+.filters {
+  @include m.flex(center, flex-start, v.$spacing-3);
+  flex-wrap: wrap;
+  margin-bottom: v.$spacing-4;
+}
+
+.userCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.userName {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.userSub {
+  font-size: v.$font-size-xs;
+  color: var(--text-secondary);
+}
+
+.balance {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.actions {
+  @include m.flex(center, flex-end, v.$spacing-2);
+  flex-wrap: wrap;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-4;
+}
+
+.typeToggle {
+  @include m.flex(center, flex-start, v.$spacing-2);
+}
+
+.typeBtn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: v.$font-size-sm;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.typeBtnActive {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.balanceSummary {
+  @include m.flex(center, space-between);
+  padding: v.$spacing-3;
+  border-radius: var(--radius-md);
+  background: var(--gray-50);
+  font-size: v.$font-size-sm;
+  color: var(--text-secondary);
+}
+
+.balanceValue {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.modalLoading {
+  @include m.flex(center, center);
+  padding: v.$spacing-8 0;
+}

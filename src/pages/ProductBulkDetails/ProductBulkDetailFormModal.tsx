@@ -48,7 +48,6 @@ export function ProductBulkDetailFormModal({ open, detail, defaultProductId, onC
         discountPercentage: detail?.discountPercentage ?? 0,
         freeQuantity: detail?.freeQuantity ?? 0,
         fees: detail?.fees ?? 0,
-        shippingCharges: detail?.shippingCharges ?? 0,
         totalPrice: detail?.totalPrice ?? 0,
         totalPoints: detail?.totalPoints ?? 0,
         sortOrder: detail?.sortOrder ?? 0,
@@ -130,10 +129,9 @@ export function ProductBulkDetailFormModal({ open, detail, defaultProductId, onC
           />
         </div>
 
-        <div className={styles.row3}>
+        <div className={styles.row}>
           <Input label="Free Quantity" type="number" {...register('freeQuantity')} />
           <Input label="Fees" type="number" step="0.01" {...register('fees')} />
-          <Input label="Shipping Charges" type="number" step="0.01" {...register('shippingCharges')} />
         </div>
 
         <div className={styles.row3}>

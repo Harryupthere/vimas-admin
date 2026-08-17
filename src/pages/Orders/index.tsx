@@ -33,6 +33,7 @@ export default function OrdersPage() {
       render: (o) => o.buyer?.username ?? o.buyer?.email ?? `User #${o.buyerId}`,
     },
     { key: 'product', label: 'Product', render: (o) => o.product?.name ?? `#${o.productId}` },
+    { key: 'productType', label: 'Type', render: (o) => <StatusBadge label={o.productType} tone="neutral" /> },
     { key: 'quantity', label: 'Qty', render: (o) => String(o.quantity) },
     { key: 'totalAmount', label: 'Total', render: (o) => formatCurrency(o.totalAmount) },
     {

@@ -9,6 +9,7 @@ import {
   SettingsIcon,
   UserCircleIcon,
   UsersIcon,
+  WalletIcon,
 } from '../layouts/AdminLayout/icons';
 
 export interface NavLeaf {
@@ -37,12 +38,17 @@ export const NAV_ITEMS: NavGroup[] = [
       { label: 'Brands', path: '/catalog/brands' },
       { label: 'Products', path: '/catalog/products' },
       { label: 'Product Bulk Details', path: '/catalog/product-bulk-details' },
+      { label: 'Product Extra Charges', path: '/catalog/product-extra-charges' },
+      { label: 'Product Add-Ons', path: '/catalog/product-add-ons' },
+      { label: 'Product Coupons', path: '/catalog/product-coupons' },
+      { label: 'Product Discounts', path: '/catalog/product-discounts' },
       { label: 'Product Actions', path: '/catalog/product-actions' },
       { label: 'Product Feedback', path: '/catalog/product-feedback' },
       { label: 'Review & Rating', path: '/catalog/review-rating' },
       { label: 'Product History', path: '/catalog/product-history' },
     ],
   },
+  { label: 'E-Wallet', icon: WalletIcon, path: '/wallet' },
   {
     label: 'Orders',
     icon: CartIcon,

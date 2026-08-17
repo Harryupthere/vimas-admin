@@ -12,8 +12,13 @@ export interface PaymentStatusRef {
   colour?: string;
 }
 
+export type OrderProductType = 'reseller' | 'consumer' | 'partner';
+
 export interface Order {
   id: number;
+  // FK -> order_snapshots(id); null for orders placed before snapshotting existed.
+  orderSnapshotId?: number | null;
+  productType: OrderProductType;
   buyerId: number;
   buyer?: { id: number; username?: string; email?: string; first_name?: string; last_name?: string };
   productId: number;
@@ -25,7 +30,6 @@ export interface Order {
   orderStatus?: OrderStatusRef;
   quantity: number;
   singleUnitPrice: number;
-  discountAmount: number;
   totalAmount: number;
   totalAmountPaid: number;
   createdAt: string;

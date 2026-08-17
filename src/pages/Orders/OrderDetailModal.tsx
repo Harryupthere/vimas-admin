@@ -24,13 +24,13 @@ export function OrderDetailModal({ orderId, onClose }: OrderDetailModalProps) {
       ) : (
         <dl className={styles.detailGrid}>
           <Field label="Product" value={order.product?.name ?? `#${order.productId}`} />
+          <Field label="Product Type" value={order.productType} />
           <Field
             label="Buyer"
             value={order.buyer?.username ?? order.buyer?.email ?? `User #${order.buyerId}`}
           />
           <Field label="Quantity" value={String(order.quantity)} />
           <Field label="Unit Price" value={formatCurrency(order.singleUnitPrice)} />
-          <Field label="Discount" value={formatCurrency(order.discountAmount)} />
           <Field label="Total Amount" value={formatCurrency(order.totalAmount)} />
           <Field label="Amount Paid" value={formatCurrency(order.totalAmountPaid)} />
           <Field label="Order Status" value={order.orderStatus?.name ?? '—'} />

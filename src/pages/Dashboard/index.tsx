@@ -96,7 +96,7 @@ console.log("?????")
             <>
               <span className={styles.primaryText}>Order #{order.id}</span>
               <span className={styles.secondaryText}>
-                {order.totalAmount !== undefined ? `₹${order.totalAmount}` : ''}
+                {order.totalAmount !== undefined ? `MYR${order.totalAmount}` : ''}
                 {order.orderStatus?.name ? ` · ${order.orderStatus.name}` : ''}
               </span>
             </>

@@ -7,7 +7,6 @@ export const productBulkDetailSchema = z.object({
   discountPercentage: z.coerce.number().min(0).optional(),
   freeQuantity: z.coerce.number().int().min(0).optional(),
   fees: z.coerce.number().min(0).optional(),
-  shippingCharges: z.coerce.number().min(0).optional(),
   totalPrice: z.coerce.number().min(0).optional(),
   totalPoints: z.coerce.number().min(0).optional(),
   sortOrder: z.coerce.number().int().min(0).optional(),
