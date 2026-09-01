@@ -71,9 +71,9 @@ function UserBalancesTab() {
 
   const columns: TableColumn<PointUserBalance>[] = [
     { key: 'userId', label: 'User', render: (b) => b.user?.username ?? b.user?.email ?? `User #${b.userId}` },
-    { key: 'totalCredit', label: 'Total Credit', render: (b) => formatCurrency(b.totalCredit) },
-    { key: 'totalDebit', label: 'Total Debit', render: (b) => formatCurrency(b.totalDebit) },
-    { key: 'currentBalance', label: 'Balance', render: (b) => formatCurrency(b.currentBalance) },
+    { key: 'totalCredit', label: 'Total Credit', render: (b) => (b.totalCredit) },
+    { key: 'totalDebit', label: 'Total Debit', render: (b) => (b.totalDebit) },
+    { key: 'currentBalance', label: 'Balance', render: (b) => (b.currentBalance) },
     {
       key: 'actions',
       label: '',
