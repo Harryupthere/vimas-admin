@@ -49,3 +49,15 @@
   font-size: v.$font-size-sm;
   color: var(--text-primary);
 }
+
+.sectionTitle {
+  grid-column: 1 / -1;
+  margin: v.$spacing-2 0 0;
+  padding-top: v.$spacing-2;
+  border-top: 1px solid var(--border-color);
+  font-size: v.$font-size-xs;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
