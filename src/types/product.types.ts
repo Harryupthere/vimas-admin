@@ -60,6 +60,10 @@ export interface Product {
   consumerAvailable?: number;
   // Gates the partner product listing (GET /products?type=partner).
   partnerAvailable?: number;
+  consumerMinimumQuantity?: number;
+  consumerMaximumQuantity?: number;
+  resellerMinimumQuantity?: number;
+  resellerMaximumQuantity?: number;
   partnerMinimumQuantity?: number;
   partnerMaximumQuantity?: number;
   category?: CategoryRef;
@@ -110,6 +114,10 @@ export interface CreateProductRequest {
   consumerAvailable?: boolean;
   // Gates the partner product listing (GET /products?type=partner).
   partnerAvailable?: boolean;
+  consumerMinimumQuantity?: number;
+  consumerMaximumQuantity?: number;
+  resellerMinimumQuantity?: number;
+  resellerMaximumQuantity?: number;
   partnerMinimumQuantity?: number;
   partnerMaximumQuantity?: number;
 }

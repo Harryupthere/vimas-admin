@@ -70,6 +70,10 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
       // so a new product starts with both checked, matching the DB default.
       consumerAvailable: product ? !!product.consumerAvailable : true,
       partnerAvailable: product ? !!product.partnerAvailable : true,
+      consumerMinimumQuantity: product?.consumerMinimumQuantity ?? 1,
+      consumerMaximumQuantity: product?.consumerMaximumQuantity ?? 1,
+      resellerMinimumQuantity: product?.resellerMinimumQuantity ?? 1,
+      resellerMaximumQuantity: product?.resellerMaximumQuantity ?? 1,
       partnerMinimumQuantity: product?.partnerMinimumQuantity ?? 1,
       partnerMaximumQuantity: product?.partnerMaximumQuantity ?? 1,
     });
@@ -126,6 +130,10 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
         bulkAvailable: values.bulkAvailable,
         consumerAvailable: values.consumerAvailable,
         partnerAvailable: values.partnerAvailable,
+        consumerMinimumQuantity: values.consumerMinimumQuantity,
+        consumerMaximumQuantity: values.consumerMaximumQuantity,
+        resellerMinimumQuantity: values.resellerMinimumQuantity,
+        resellerMaximumQuantity: values.resellerMaximumQuantity,
         partnerMinimumQuantity: values.partnerMinimumQuantity,
         partnerMaximumQuantity: values.partnerMaximumQuantity,
       };
@@ -290,6 +298,34 @@ export function ProductFormModal({ open, product, onClose }: ProductFormModalPro
             <input type="checkbox" {...register('partnerAvailable')} />
             Available for partner listing
           </label>
+        </div>
+        <div className={styles.row}>
+          <Input
+            label="Consumer Minimum Quantity"
+            type="number"
+            error={errors.consumerMinimumQuantity?.message}
+            {...register('consumerMinimumQuantity')}
+          />
+          <Input
+            label="Consumer Maximum Quantity"
+            type="number"
+            error={errors.consumerMaximumQuantity?.message}
+            {...register('consumerMaximumQuantity')}
+          />
+        </div>
+        <div className={styles.row}>
+          <Input
+            label="Reseller Minimum Quantity"
+            type="number"
+            error={errors.resellerMinimumQuantity?.message}
+            {...register('resellerMinimumQuantity')}
+          />
+          <Input
+            label="Reseller Maximum Quantity"
+            type="number"
+            error={errors.resellerMaximumQuantity?.message}
+            {...register('resellerMaximumQuantity')}
+          />
         </div>
         <div className={styles.row}>
           <Input

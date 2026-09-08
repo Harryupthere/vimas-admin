@@ -50,6 +50,10 @@ export function ProductBulkDetailFormModal({ open, detail, defaultProductId, onC
         fees: detail?.fees ?? 0,
         totalPrice: detail?.totalPrice ?? 0,
         totalPoints: detail?.totalPoints ?? 0,
+        // Backend defaults these two to true (unlike the product-level flags,
+        // which default to false) — so a new tier starts with both checked.
+        showTotalPoints: detail ? !!detail.showTotalPoints : true,
+        showPointsSharing: detail ? !!detail.showPointsSharing : true,
         sortOrder: detail?.sortOrder ?? 0,
         status: detail?.status ?? 1,
       });
@@ -138,6 +142,17 @@ export function ProductBulkDetailFormModal({ open, detail, defaultProductId, onC
           <Input label="Total Price" type="number" step="0.01" {...register('totalPrice')} />
           <Input label="Total Points" type="number" step="0.01" {...register('totalPoints')} />
           <Input label="Sort Order" type="number" {...register('sortOrder')} />
+        </div>
+
+        <div className={styles.checkboxGroup}>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('showTotalPoints')} />
+            Show total points to buyers
+          </label>
+          <label className={styles.checkboxRow}>
+            <input type="checkbox" {...register('showPointsSharing')} />
+            Show points-sharing breakdown to buyers
+          </label>
         </div>
 
         <Select

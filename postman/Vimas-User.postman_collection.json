@@ -1,0 +1,3912 @@
+{
+  "info": {
+    "name": "Vimas - User (Buyer & Merchant)",
+    "description": "Buyer and merchant-facing APIs for the Vimas e-commerce backend. Run \"Register\" (username + password, optionally referred_username) to create an account and auto-populate {{token}} and {{refresh_token}} \u2014 no email verification is required. Afterwards call \"Update Profile\" to add first/last name, email, address, country, and phone number. Use \"Login (Username)\" to sign back in, or \"Refresh Token\" once the access token expires.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"harsh_buyer\",\n  \"password\": \"Passw0rd!\",\n  \"referred_username\": \"existing_referrer_username\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Registering with username/password logs the user in immediately",
+                  "// (no email verification step), so save the tokens like Login does.",
+                  "const json = pm.response.json();",
+                  "const payload = json && json.data && json.data.data;",
+                  "if (payload && payload.access_token) {",
+                  "  pm.collectionVariables.set('token', payload.access_token);",
+                  "  console.log('Saved access token to collection variable');",
+                  "}",
+                  "if (payload && payload.refresh_token) {",
+                  "  pm.collectionVariables.set('refresh_token', payload.refresh_token);",
+                  "  console.log('Saved refresh token to collection variable');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"harsh.buyer@example.com\",\n  \"password\": \"Passw0rd!\",\n  \"login_type\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const payload = json && json.data && json.data.data;",
+                  "if (payload && payload.access_token) {",
+                  "  pm.collectionVariables.set('token', payload.access_token);",
+                  "  console.log('Saved access token to collection variable');",
+                  "}",
+                  "if (payload && payload.refresh_token) {",
+                  "  pm.collectionVariables.set('refresh_token', payload.refresh_token);",
+                  "  console.log('Saved refresh token to collection variable');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login (Username)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"harsh_buyer\",\n  \"password\": \"Passw0rd!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const payload = json && json.data && json.data.data;",
+                  "if (payload && payload.access_token) {",
+                  "  pm.collectionVariables.set('token', payload.access_token);",
+                  "  console.log('Saved access token to collection variable');",
+                  "}",
+                  "if (payload && payload.refresh_token) {",
+                  "  pm.collectionVariables.set('refresh_token', payload.refresh_token);",
+                  "  console.log('Saved refresh token to collection variable');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/refresh-token",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "refresh-token"
+              ]
+            },
+            "description": "Exchanges the stored {{refresh_token}} for a new access token. Rotates the refresh token (old one stops working), so re-run Login if this fails with \"revoked\".",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refresh_token}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "const payload = json && json.data && json.data.data;",
+                  "if (payload && payload.access_token) {",
+                  "  pm.collectionVariables.set('token', payload.access_token);",
+                  "  console.log('Saved access token to collection variable');",
+                  "}",
+                  "if (payload && payload.refresh_token) {",
+                  "  pm.collectionVariables.set('refresh_token', payload.refresh_token);",
+                  "  console.log('Saved refresh token to collection variable');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/verify-email?token=<verification_token>",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "verify-email"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "<verification_token>",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/forgot-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"harsh.buyer@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/reset-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"<reset_token>\",\n  \"newPassword\": \"NewPassw0rd!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Upload",
+      "item": [
+        {
+          "name": "Generate Presigned URL",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/upload/presigned-url",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "upload",
+                "presigned-url"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filename\": \"product-image.jpg\",\n  \"fileType\": \"image/jpeg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Returns { uploadUrl, fileUrl }. PUT the raw file bytes directly to uploadUrl (with a matching Content-Type header, no auth) within 5 minutes \u2014 the presigned URL expires after that. fileUrl is the permanent CloudFront URL to store/display once the upload completes. Any authenticated user or admin token works \u2014 this endpoint isn't role-gated."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "profile"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Now also includes `referredBy` \u2014 the user who referred this account (id, name, email, uniqueUserId, joinedAt = the referrer's own signup date), or null if this account has no referrer."
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/profile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "profile"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Harsh\",\n  \"last_name\": \"Chouhan\",\n  \"email\": \"harsh.buyer@example.com\",\n  \"address\": \"221B Baker Street, Andheri East\",\n  \"country\": \"India\",\n  \"phone_number\": \"9876543210\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update Password",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "password"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldPassword\": \"Passw0rd!\",\n  \"newPassword\": \"NewPassw0rd!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "My Team (Level 1 / Level 2)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/my-team?level=1&page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "my-team"
+              ],
+              "query": [
+                {
+                  "key": "level",
+                  "value": "1",
+                  "description": "1 = direct referrals, 2 = their referrals"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Category",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/category?parent=&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "category"
+              ],
+              "query": [
+                {
+                  "key": "parent",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Brands",
+      "item": [
+        {
+          "name": "List Brands",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/brands?search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Brands By Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/brands/category/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands",
+                "category",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Categories By Brand",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/brands/:id/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "brands",
+                ":id",
+                "categories"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products (Buyer)",
+      "item": [
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "type",
+                  "value": "",
+                  "description": "reseller | consumer | partner",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "type=reseller restricts results to bulk-purchasable products (bulk_available = 1); type=consumer to consumer-available products (consumer_available = 1); type=partner to partner-available products (partner_available = 1). Omit (or any other value) to get the full catalog. Points display: for consumer/default, each product includes totalPoints (if the product's showTotalPoints is on) and pointsSharing (if showPointsSharing is on) sourced from the product itself. For type=reseller, those same two fields instead come from EACH active bulk package under the product \u2014 returned as bulkPointsSharing: an array of { productBulkDetailsId, packageQuantity, totalPoints?, pointsSharing? }, one entry per package, each gated by that package's own showTotalPoints/showPointsSharing."
+          }
+        },
+        {
+          "name": "Get Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/:id?type=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                ":id"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "",
+                  "description": "reseller | consumer | partner",
+                  "disabled": true
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Response conditionally includes totalPoints/pointsSharing \u2014 an array of { receiverType, pointsPercentage, points } for each active BUY_PRODUCT distribution rule \u2014 sourced from the product's own showTotalPoints/showPointsSharing for consumer/default requests. type=reseller returns \"Product not found\" unless the product's bulk_available = 1; type=consumer requires consumer_available = 1; type=partner requires partner_available = 1. type=reseller also swaps totalPoints/pointsSharing for bulkPointsSharing: one entry per active bulk package ( { productBulkDetailsId, packageQuantity, totalPoints?, pointsSharing? } ), each gated by that package's own showTotalPoints/showPointsSharing instead of the product's."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Likes",
+      "item": [
+        {
+          "name": "Toggle Like",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-likes/:productId/toggle",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-likes",
+                ":productId",
+                "toggle"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Likes the product if you haven't liked it yet, unlikes it if you have. Returns { liked, likeCount } \u2014 likeCount is recomputed from product_likes (COUNT), then written back to products.like_count."
+          }
+        },
+        {
+          "name": "Get Like Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-likes/:productId/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-likes",
+                ":productId",
+                "status"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Returns whether you've liked this product plus the current likeCount."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Views",
+      "item": [
+        {
+          "name": "Record View",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-views/:productId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-views",
+                ":productId"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Records a view for this product from the current user. Repeat views from the same user touch last_viewed_at rather than counting again, so view_count is unique-viewer count. GET /products/:id already calls this internally on every visit \u2014 this endpoint exists for cases where you want to record a view without fetching the full product payload (e.g. a carousel/quick-view widget)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Bulk Details",
+      "item": [
+        {
+          "name": "List Packages For Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-bulk-details/product/:productId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-bulk-details",
+                "product",
+                ":productId"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Returns just id + packageQuantity + unitPrice per active package \u2014 enough to render a \"buy N units\" picker."
+          }
+        },
+        {
+          "name": "Get Package Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-bulk-details/product/:productId/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-bulk-details",
+                "product",
+                ":productId",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Full product_bulk_details row for the package the buyer picked from the list above, scoped to that product."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Add-Ons",
+      "item": [
+        {
+          "name": "List Product Add-Ons For Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-add-ons/product/:productId?productType=CONSUMER",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-add-ons",
+                "product",
+                ":productId"
+              ],
+              "query": [
+                {
+                  "key": "productType",
+                  "value": "CONSUMER",
+                  "description": "Required \u2014 CONSUMER, RESELLER or PARTNER, matching the cart item's product type"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Buyer: active, opt-in add-ons for this product + product type, shown on the checkout page (e.g. gift packaging). Pass the ids the buyer selects as addOnIds on the checkout request \u2014 pricing is calculated server-side."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Discounts",
+      "item": [
+        {
+          "name": "List Product Discounts For Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-discounts/product/:productId?productType=CONSUMER",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-discounts",
+                "product",
+                ":productId"
+              ],
+              "query": [
+                {
+                  "key": "productType",
+                  "value": "CONSUMER",
+                  "description": "Required \u2014 CONSUMER, RESELLER or PARTNER, matching the cart item's product type"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Buyer: automatic discounts available for this product + product type, further filtered to ones currently within their start/end date window. These are never opt-in \u2014 the best-matching one is applied automatically at checkout."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Extra Charges",
+      "item": [
+        {
+          "name": "List Product Extra Charges For Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-extra-charges/product/:productId?productType=CONSUMER&paymentOptionId=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-extra-charges",
+                "product",
+                ":productId"
+              ],
+              "query": [
+                {
+                  "key": "productType",
+                  "value": "CONSUMER",
+                  "description": "Required \u2014 CONSUMER, RESELLER or PARTNER, matching the cart item's product type"
+                },
+                {
+                  "key": "paymentOptionId",
+                  "value": "",
+                  "description": "Optional \u2014 narrow to the payment option the buyer has selected"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Buyer: extra charges (e.g. processing fee) that will be auto-applied to this product + product type at checkout, shown here so the buyer can see them ahead of time."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Media",
+      "item": [
+        {
+          "name": "List Media For Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-media/:productId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-media",
+                ":productId"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Payment Option",
+      "item": [
+        {
+          "name": "Get Payment Options For Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-payment-option/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-payment-option",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Types",
+      "item": [
+        {
+          "name": "List User Types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/user-types?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "user-types"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User Type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/user-types/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "user-types",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Registration Types",
+      "item": [
+        {
+          "name": "List Registration Types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user/registration-types?search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user",
+                "registration-types"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Add To Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/cart",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"quantity\": 1,\n  \"cart_type\": \"consumer\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "cart_type is optional and defaults to \"consumer\" (consumer | reseller | partner). consumer and reseller are separate rows for the same product \u2014 adding a reseller line for a product you already have as consumer creates a second row instead of merging quantities (a buyer can hold both at once). quantity is checked against consumerMinimumQuantity/consumerMaximumQuantity, resellerMinimumQuantity/resellerMaximumQuantity, or partnerMinimumQuantity/partnerMaximumQuantity depending on cart_type \u2014 400 if outside those bounds. For cart_type=\"reseller\", productBulkDetailsId is required \u2014 see the \"Add To Cart (Reseller)\" request for how multiple packages of the same product are handled. For cart_type=\"partner\", the add is rejected with 400 if the product already has a consumer or reseller row in this buyer's cart."
+          }
+        },
+        {
+          "name": "Add To Cart (Reseller)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/cart",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"quantity\": 1,\n  \"cart_type\": \"reseller\",\n  \"productBulkDetailsId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Each distinct productBulkDetailsId is its own cart row \u2014 adding package #2 after already having package #1 in your cart creates a SECOND reseller row, it does not overwrite the first. Adding the same productBulkDetailsId again just increases that row's quantity. Either way, resellerMinimumQuantity/resellerMaximumQuantity bounds the TOTAL quantity across every reseller row you hold for this product (i.e. every package you've picked, counted together) \u2014 a package counts as \"quantity 1\" toward that cap regardless of how many units are physically inside it. productBulkDetailsId must reference an active product_bulk_details package for this exact product (see the Product Bulk Details folder)."
+          }
+        },
+        {
+          "name": "Update Cart Item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/cart/:productId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                ":productId"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 2,\n  \"cart_type\": \"reseller\",\n  \"productBulkDetailsId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "cart_type disambiguates which of your rows for this product to update (defaults to \"consumer\"). For cart_type=\"reseller\", productBulkDetailsId is REQUIRED \u2014 it identifies which specific package's row to update, since a reseller product can have more than one row (one per package). quantity sets that row's value directly (not additive); it's validated against the same consumer/reseller min-max bounds as Add To Cart, applied to the TOTAL across all of your rows for this product+type, not just this one row."
+          }
+        },
+        {
+          "name": "Remove From Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/cart/:productId?cart_type=&productBulkDetailsId=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart",
+                ":productId"
+              ],
+              "query": [
+                {
+                  "key": "cart_type",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "productBulkDetailsId",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "cart_type query param disambiguates which of your rows for this product to remove (defaults to \"consumer\"). For cart_type=reseller, productBulkDetailsId is REQUIRED \u2014 it identifies which specific package's row to remove, so removing one package doesn't wipe every reseller row you have for this product."
+          }
+        },
+        {
+          "name": "Get Cart",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/cart",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "cart"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Returns every cart row for the buyer \u2014 one consumer row per product at most, and for reseller, one row per distinct bulk package picked (so the same product can appear multiple times as reseller rows, each with its own productBulkDetails)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contact Info",
+      "item": [
+        {
+          "name": "Create Contact Info",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/contact-info",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "contact-info"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"9977126444\",\n  \"countryCode\": \"+91\",\n  \"address1\": \"123 MG Road\",\n  \"address2\": \"Near City Mall\",\n  \"landmark\": \"Opposite Bus Stand\",\n  \"state\": \"Madhya Pradesh\",\n  \"country\": \"India\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List My Contact Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/contact-info?search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "contact-info"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Contact Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/contact-info/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "contact-info",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Contact Info",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/contact-info/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "contact-info",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"landmark\": \"Near Railway Station\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete Contact Info",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/contact-info/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "contact-info",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders (Buyer)",
+      "item": [
+        {
+          "name": "Checkout Cart (Stripe)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/checkout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "checkout"
+              ]
+            },
+            "description": "Creates one pending order per cart item and returns a Stripe Checkout URL. Redirect the buyer to data.checkoutUrl. If the selected payment option has a non-zero `charges` value, it's added as a separate \"Payment processing fee\" line item on top of the cart subtotal. Each product's own extra charges (see Product Extra Charges) are now scoped to paymentOptionId as well — only the charges the admin configured for this exact product + payment option pairing are applied; a product with none configured for it is charged nothing extra.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactInfoId\": 1,\n  \"paymentOptionId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Checkout Cart (CoinPayments)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/checkout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "checkout"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactInfoId\": 1,\n  \"paymentOptionId\": 2,\n  \"cryptoCurrencyId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Same endpoint as the Stripe checkout \u2014 set paymentOptionId to whichever payment_options row activates CoinPayments (name containing \"crypto\" or \"coin payment\") and pass cryptoCurrencyId (from Crypto Currencies > List) to invoice in that coin. If the selected payment option has a non-zero `charges` value, it's added as a separate \"Payment processing fee\" item converted at the same rate. Returns the same { checkoutUrl, sessionId } shape; redirect the buyer to data.checkoutUrl."
+          }
+        },
+        {
+          "name": "Checkout Cart with Coupons/Add-ons/Wallet (Stripe)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/orders/checkout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "checkout"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contactInfoId\": 1,\n  \"paymentOptionId\": 1,\n  \"couponCodes\": [\n    \"SAVE10\",\n    \"PARTNER5\"\n  ],\n  \"addOnIds\": [\n    1,\n    2\n  ],\n  \"useWallet\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Same endpoint as the plain Stripe checkout above \u2014 couponCodes/addOnIds/useWallet are all optional selections/intent only. couponCodes takes one code per product (each code is matched to its own cart item and validated independently \u2014 two codes may not target the same product). The backend looks each of them up in the DB, validates eligibility (product/product type/quantity/active/validity), and computes every extra charge, add-on amount, discount, coupon discount and wallet deduction itself; nothing calculated on the client is trusted. See GET orders/checkout/pricing to preview these numbers before submitting."
+          }
+        },
+        {
+          "name": "Checkout Pricing Preview",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders/checkout/pricing?couponCodes=SAVE10,PARTNER5&addOnIds=1,2&useWallet=true&paymentOptionId=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "checkout",
+                "pricing"
+              ],
+              "query": [
+                {
+                  "key": "couponCodes",
+                  "value": "SAVE10,PARTNER5",
+                  "description": "Optional \u2014 comma-separated coupon codes, one per product; omit to preview without any coupon applied"
+                },
+                {
+                  "key": "addOnIds",
+                  "value": "1,2",
+                  "description": "Optional \u2014 comma-separated product_add_ons ids to preview"
+                },
+                {
+                  "key": "useWallet",
+                  "value": "true",
+                  "description": "Optional \u2014 true to preview with the wallet balance applied"
+                },
+                {
+                  "key": "paymentOptionId",
+                  "value": "1",
+                  "description": "Optional \u2014 payment_options id to preview against; extra charges are now configured per product+payment option (see ProductExtraCharge), so this determines which extra charges apply. Omit to preview against payment option 1 (the same default checkout uses)."
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Read-only checkout-page preview: applicable extra charges (scoped to paymentOptionId), eligible add-ons, automatic discounts, coupons (one per product, if provided) and wallet info (only if the wallet is active), all calculated server-side from the current cart \u2014 no order or order_snapshot is created. The response's items array breaks everything down per product (and per product type, for a mixed consumer/partner/reseller cart), so the frontend can render a per-product breakdown directly."
+          }
+        },
+        {
+          "name": "Check Order Status By Stripe Session",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders/status?sessionId=<stripe_checkout_session_id>",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "sessionId",
+                  "value": "<stripe_checkout_session_id>",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "Frontend polls this after Stripe redirects back with ?session_id=... to confirm payment status.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "My Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders/my?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "my"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "My Order Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders/my/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "my",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get My Order Snapshot",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders/snapshots/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "snapshots",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Full pricing breakdown for one of the buyer's own orders \u2014 the id is order_snapshot_id on the order (from My Order Detail)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wallet (Buyer)",
+      "item": [
+        {
+          "name": "My Wallet Balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/wallet",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "wallet"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Current balance + active/inactive status for the authenticated buyer."
+          }
+        },
+        {
+          "name": "My Wallet Transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/wallet/transactions?page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "wallet",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "The buyer's own CREDIT/DEBIT/CHECKOUT/REFUND ledger, newest first."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Crypto Currencies",
+      "item": [
+        {
+          "name": "List Crypto Currencies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/crypto-currencies?search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "crypto-currencies"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Active coins only \u2014 populate the CoinPayments checkout's currency picker with these ids."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Review & Rating",
+      "item": [
+        {
+          "name": "Create Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/review-rating",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "review-rating"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"orderId\": 1,\n  \"rate\": 5,\n  \"review\": \"Great product, fast delivery!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Reviews For Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/review-rating/product/:productId?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "review-rating",
+                "product",
+                ":productId"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "My Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/review-rating/my?search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "review-rating",
+                "my"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update My Review",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/review-rating/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "review-rating",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rate\": 4,\n  \"review\": \"Updated review text\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete My Review",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/review-rating/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "review-rating",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reward Mall Categories",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reward-mall-categories?search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reward-mall-categories"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reward-mall-categories/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reward-mall-categories",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reward Mall Products",
+      "item": [
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reward-mall-products?page=1&limit=10&categoryId=&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reward-mall-products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "categoryId",
+                  "value": "",
+                  "disabled": false
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Each product's isOutOfStock is true if either the admin flagged it out of stock, OR you (the requesting user) have already redeemed maximumQuantity of it \u2014 in that case purchasedQuantity/maxPurchaseReached explain why, so the frontend can hide/disable the buy button instead of showing a generic \"out of stock\"."
+          }
+        },
+        {
+          "name": "Get Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reward-mall-products/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reward-mall-products",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Response includes currentPointsBalance and canAfford \u2014 an upfront preview of whether you have enough points, based on minimumQuantity. isOutOfStock is true if either the admin flagged it out of stock, OR you've already redeemed maximumQuantity of it (see purchasedQuantity/maxPurchaseReached) \u2014 canAfford factors this in too. The actual check happens again (authoritatively) when you call Redeem Product."
+          }
+        },
+        {
+          "name": "List Products (Public, No Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/public/reward-mall-products?page=1&limit=10&categoryId=&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "public",
+                "reward-mall-products"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "categoryId",
+                  "value": "",
+                  "disabled": false
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "description": "Same listing as the authenticated 'List Products' request, but no auth required. purchasedQuantity/maxPurchaseReached are always 0/false here since there's no logged-in user to scope them to."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reward Mall Product Media",
+      "item": [
+        {
+          "name": "List Media For Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reward-mall-product-media/:productId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reward-mall-product-media",
+                ":productId"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reward Mall Purchases",
+      "item": [
+        {
+          "name": "Redeem Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reward-mall-purchases",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reward-mall-purchases"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rewardMallProductId\": 1,\n  \"quantity\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Debits pointPrice x quantity from your PointUserBalance. maximumQuantity is a per-user lifetime cap, not just a per-request bound \u2014 this sums every purchase you've already made of this reward and rejects (400) if this request would push you over the cap, even if this individual request's quantity is within bounds. Also 400 if you don't have enough points or the product is out of stock; 404 if the product doesn't exist or isn't active."
+          }
+        },
+        {
+          "name": "My Purchases",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reward-mall-purchases/my?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reward-mall-purchases",
+                "my"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get My Purchase",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/reward-mall-purchases/my/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reward-mall-purchases",
+                "my",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Point Distribution",
+      "item": [
+        {
+          "name": "List Point Distribution Rules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/point-distribution?search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "point-distribution"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Get Point Distribution Rule",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/point-distribution/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "point-distribution",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Point Pool Details",
+      "item": [
+        {
+          "name": "List Point Pool Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/point-pool-detail?search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "point-pool-detail"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Get Point Pool Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/point-pool-detail/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "point-pool-detail",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Point Pools",
+      "item": [
+        {
+          "name": "List Point Pools",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/point-pool?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "point-pool"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "status",
+                  "value": "active",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Get Point Pool",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/point-pool/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "point-pool",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Point Balance",
+      "item": [
+        {
+          "name": "My Point Balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/point-user-balance",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "point-user-balance"
+              ]
+            },
+            "description": "Lazily creates a zeroed balance row on first call if the buyer/merchant has none yet.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Point Transactions",
+      "item": [
+        {
+          "name": "My Point Transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/point-transaction/my?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "point-transaction",
+                "my"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "My Downline Tree",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/point-transaction/my/downline-tree",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "point-transaction",
+                "my",
+                "downline-tree"
+              ]
+            },
+            "description": "Full referral downline tree. Each node shows earnedForMe (points earned directly from that member's own purchases) and subtreeTotal (earnedForMe + everyone below them). Response also includes a totalDownlineEarnings grand total.",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get My Point Transaction",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/point-transaction/my/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "point-transaction",
+                "my",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "My Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "dashboard"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Wallet snapshot, current-month earned/redeemed points, REFERRAL_LEVEL_1/REFERRAL_LEVEL_2 reward counts + totals, and trend \u2014 the last 6 calendar months (oldest first, including the current in-progress month) as [{ m, purchases, points }]: m is the month abbreviation (e.g. \"Feb\"), purchases is the count of this buyer's paid orders (payment_status_id = 2) that month, points is the sum of points credited to their wallet that month. Months with no activity come back as 0, not omitted, so the array is always 6 entries long."
+          }
+        },
+        {
+          "name": "Recent Activities",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard/recent-activities?page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "dashboard",
+                "recent-activities"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Single merged, latest-first feed of the user's own orders, reward mall redemptions, point transactions, and teammates joining their referral network (each type tagged via the `type` field: order | reward_mall_purchase | point_transaction | teammate). Teammate entries include which level (1 = direct referral, 2 = referred by a level-1 referral), who referred them, and a live snapshot of points earned from them / their paid-order count so far. Each source is capped at its most recent 100 rows before merging, so this is a recency feed (not exhaustive history) \u2014 for full history of one source use /orders/my, /reward-mall-purchases/my, /point-transaction/my, or /users/my-team directly."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "item": [
+        {
+          "name": "Overall Search (All Categories)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/search?q=&page=1&limit=5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "",
+                  "description": "Keyword to match; omit to just list"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "5",
+                  "description": "Per-category cap in combined mode"
+                },
+                {
+                  "key": "type",
+                  "value": "",
+                  "description": "reseller | consumer | partner | reward_mall | referral | all",
+                  "disabled": true
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "One endpoint backing the frontend's overall search bar. `type` picks a dropdown category: reseller | consumer | partner (products, gated the same way as GET /products?type=... via bulk_available/consumer_available/partner_available) | reward_mall (reward_mall_products) | referral (the caller's own direct downline, users.referral_id = caller id) | all (default \u2014 runs every category at once for a combined preview, each capped at `limit`). `q` is the keyword; omit it to just browse the category. Product/reward-mall categories match q against name, sub_title, description, information, notes, search_keywords, and each item returns { id, name, subTitle, description, category, image, sellingPrice/pointPrice }. The referral category matches q against first_name, last_name, username, unique_user_id, email and returns { id, uniqueUserId, username, firstName, lastName, fullName, email, image, status } \u2014 no product fields. Every group and item also carries `categoryLabel` (Consumer | Vimas Products | Vimas Partner | Reward Mall | Teammates) and `route` (the frontend path for that category's listing page: dashboard/mall/consumer | dashboard/mall/reseller/vimas-products | dashboard/mall/reseller/vimas-partners | dashboard/rewards | dashboard/teammates/level-1) so the frontend can redirect there directly off this response."
+          }
+        },
+        {
+          "name": "Search Consumer Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/search?type=consumer&q=&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "consumer"
+                },
+                {
+                  "key": "q",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Products with consumer_available = 1, status = 1, matched against name/sub_title/description/information/notes/search_keywords. Every group and item also carries `categoryLabel` (Consumer | Vimas Products | Vimas Partner | Reward Mall | Teammates) and `route` (the frontend path for that category's listing page: dashboard/mall/consumer | dashboard/mall/reseller/vimas-products | dashboard/mall/reseller/vimas-partners | dashboard/rewards | dashboard/teammates/level-1) so the frontend can redirect there directly off this response."
+          }
+        },
+        {
+          "name": "Search Reseller (Bulk) Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/search?type=reseller&q=&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "reseller"
+                },
+                {
+                  "key": "q",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Products with bulk_available = 1, status = 1, matched against name/sub_title/description/information/notes/search_keywords. Every group and item also carries `categoryLabel` (Consumer | Vimas Products | Vimas Partner | Reward Mall | Teammates) and `route` (the frontend path for that category's listing page: dashboard/mall/consumer | dashboard/mall/reseller/vimas-products | dashboard/mall/reseller/vimas-partners | dashboard/rewards | dashboard/teammates/level-1) so the frontend can redirect there directly off this response."
+          }
+        },
+        {
+          "name": "Search Partner Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/search?type=partner&q=&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "partner"
+                },
+                {
+                  "key": "q",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Products with partner_available = 1, status = 1, matched against name/sub_title/description/information/notes/search_keywords. Every group and item also carries `categoryLabel` (Consumer | Vimas Products | Vimas Partner | Reward Mall | Teammates) and `route` (the frontend path for that category's listing page: dashboard/mall/consumer | dashboard/mall/reseller/vimas-products | dashboard/mall/reseller/vimas-partners | dashboard/rewards | dashboard/teammates/level-1) so the frontend can redirect there directly off this response."
+          }
+        },
+        {
+          "name": "Search Reward Mall Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/search?type=reward_mall&q=&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "reward_mall"
+                },
+                {
+                  "key": "q",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "reward_mall_products with status = 1, matched against name/sub_title/description/information/notes/search_keywords. Every group and item also carries `categoryLabel` (Consumer | Vimas Products | Vimas Partner | Reward Mall | Teammates) and `route` (the frontend path for that category's listing page: dashboard/mall/consumer | dashboard/mall/reseller/vimas-products | dashboard/mall/reseller/vimas-partners | dashboard/rewards | dashboard/teammates/level-1) so the frontend can redirect there directly off this response."
+          }
+        },
+        {
+          "name": "Search My Referrals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/search?type=referral&q=&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "referral"
+                },
+                {
+                  "key": "q",
+                  "value": "",
+                  "description": "Matches first_name/last_name/username/unique_user_id/email"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Only the caller's own direct downline (users.referral_id = caller's id), matched against first_name/last_name/username/unique_user_id/email. Every group and item also carries `categoryLabel` (Consumer | Vimas Products | Vimas Partner | Reward Mall | Teammates) and `route` (the frontend path for that category's listing page: dashboard/mall/consumer | dashboard/mall/reseller/vimas-products | dashboard/mall/reseller/vimas-partners | dashboard/rewards | dashboard/teammates/level-1) so the frontend can redirect there directly off this response."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Feedback",
+      "item": [
+        {
+          "name": "Create Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/product-feedback",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-feedback"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"rating\": 5,\n  \"comment\": \"Great product, works as expected!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Omit rating (and set parentFeedbackId) to post a reply to another feedback/comment instead of a top-level review."
+          }
+        },
+        {
+          "name": "Reply To Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/product-feedback",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-feedback"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"parentFeedbackId\": 1,\n  \"comment\": \"Thanks for the review!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List Feedback For Product",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-feedback/product/:productId?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-feedback",
+                "product",
+                ":productId"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Replies For Feedback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-feedback/:id/replies?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-feedback",
+                ":id",
+                "replies"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "My Feedback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-feedback/my?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-feedback",
+                "my"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": false
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": false
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update My Feedback",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/product-feedback/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-feedback",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comment\": \"Updated comment\",\n  \"rating\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Delete My Feedback",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-feedback/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-feedback",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "Soft-deletes (status becomes 'deleted') so replies/likes from other users are preserved."
+          }
+        },
+        {
+          "name": "Like Feedback",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-feedback/:id/like",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-feedback",
+                ":id",
+                "like"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Unlike Feedback",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/product-feedback/:id/like",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "product-feedback",
+                ":id",
+                "like"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification Categories",
+      "item": [
+        {
+          "name": "List Notification Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notification-categories?search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notification-categories"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "List My Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications?page=1&limit=10&search=&unreadOnly=false&categoryId=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                },
+                {
+                  "key": "unreadOnly",
+                  "value": "false"
+                },
+                {
+                  "key": "categoryId",
+                  "value": "",
+                  "description": "Optional \u2014 filter to notifications in this category only"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Unread Notification Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/unread-count",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "unread-count"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Notification",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Notification As Read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/:id/read",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                ":id",
+                "read"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark All Notifications As Read",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/read-all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "read-all"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hide Notification",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/:id/hide",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                ":id",
+                "hide"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Notification Preferences",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/preferences",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "preferences"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Notification Preference",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/notifications/preferences/:categoryId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "preferences",
+                ":categoryId"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isEnabled\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Sessions",
+      "item": [
+        {
+          "name": "List My Sessions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user-sessions?page=1&limit=10&search=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user-sessions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Optional search term (matches against relevant text fields)"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "description": "The logged-in user's own sessions only."
+          }
+        },
+        {
+          "name": "Get My Session",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user-sessions/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user-sessions",
+                ":id"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

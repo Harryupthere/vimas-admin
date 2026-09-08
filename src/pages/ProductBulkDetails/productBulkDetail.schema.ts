@@ -9,6 +9,8 @@ export const productBulkDetailSchema = z.object({
   fees: z.coerce.number().min(0).optional(),
   totalPrice: z.coerce.number().min(0).optional(),
   totalPoints: z.coerce.number().min(0).optional(),
+  showTotalPoints: z.boolean().optional(),
+  showPointsSharing: z.boolean().optional(),
   sortOrder: z.coerce.number().int().min(0).optional(),
   status: z.coerce.number().optional(),
 });

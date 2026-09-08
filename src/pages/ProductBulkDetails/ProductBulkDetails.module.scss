@@ -33,6 +33,17 @@
   gap: v.$spacing-4;
 }
 
+.checkboxRow {
+  @include m.flex(center, flex-start, v.$spacing-2);
+  font-size: v.$font-size-sm;
+  color: var(--text-primary);
+}
+
+.checkboxGroup {
+  @include m.flex(center, flex-start, v.$spacing-5);
+  flex-wrap: wrap;
+}
+
 .actions {
   @include m.flex(center, flex-end, v.$spacing-2);
 }

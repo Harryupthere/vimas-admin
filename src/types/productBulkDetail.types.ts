@@ -16,6 +16,8 @@ export interface ProductBulkDetail {
   shippingCharges: number;
   totalPrice: number;
   totalPoints: number;
+  showTotalPoints: number;
+  showPointsSharing: number;
   sortOrder: number;
   status: number;
   createdAt: string;
@@ -37,6 +39,8 @@ export interface CreateProductBulkDetailRequest {
   shippingCharges?: number;
   totalPrice?: number;
   totalPoints?: number;
+  showTotalPoints?: boolean;
+  showPointsSharing?: boolean;
   sortOrder?: number;
   status?: number;
 }

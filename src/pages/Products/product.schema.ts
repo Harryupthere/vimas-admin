@@ -34,6 +34,10 @@ export const productSchema = z
     bulkAvailable: z.boolean().optional(),
     consumerAvailable: z.boolean().optional(),
     partnerAvailable: z.boolean().optional(),
+    consumerMinimumQuantity: z.coerce.number().min(1, 'Must be at least 1').optional(),
+    consumerMaximumQuantity: z.coerce.number().min(1, 'Must be at least 1').optional(),
+    resellerMinimumQuantity: z.coerce.number().min(1, 'Must be at least 1').optional(),
+    resellerMaximumQuantity: z.coerce.number().min(1, 'Must be at least 1').optional(),
     partnerMinimumQuantity: z.coerce.number().min(1, 'Must be at least 1').optional(),
     partnerMaximumQuantity: z.coerce.number().min(1, 'Must be at least 1').optional(),
   })
@@ -48,6 +52,20 @@ export const productSchema = z
       }
     },
     { message: 'Must be a valid JSON array, e.g. [{"label":"Weight","value":"500g"}]', path: ['detailsJson'] },
+  )
+  .refine(
+    (values) =>
+      values.consumerMinimumQuantity === undefined ||
+      values.consumerMaximumQuantity === undefined ||
+      values.consumerMinimumQuantity <= values.consumerMaximumQuantity,
+    { message: 'Must be greater than or equal to minimum quantity', path: ['consumerMaximumQuantity'] },
+  )
+  .refine(
+    (values) =>
+      values.resellerMinimumQuantity === undefined ||
+      values.resellerMaximumQuantity === undefined ||
+      values.resellerMinimumQuantity <= values.resellerMaximumQuantity,
+    { message: 'Must be greater than or equal to minimum quantity', path: ['resellerMaximumQuantity'] },
   )
   .refine(
     (values) =>
