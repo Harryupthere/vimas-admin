@@ -64,6 +64,7 @@ export default function ProductExtraChargesPage() {
         </div>
       ) },
     { key: 'productType', label: 'Type', render: (c) => PRODUCT_TYPE_LABELS[c.productType] },
+    { key: 'paymentOption', label: 'Payment Option', render: (c) => c.paymentOption?.name ?? `#${c.paymentOptionId}` },
     {
       key: 'charge',
       label: 'Charge',

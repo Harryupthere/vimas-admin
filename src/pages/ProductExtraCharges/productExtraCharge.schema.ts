@@ -4,6 +4,7 @@ import { PRODUCT_TYPES } from '../../types/productType.types';
 
 export const productExtraChargeSchema = z.object({
   productId: z.string().min(1, 'Product is required'),
+  paymentOptionId: z.string().min(1, 'Payment option is required'),
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
   symbol: z.string().optional(),

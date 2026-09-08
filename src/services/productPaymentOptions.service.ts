@@ -7,6 +7,16 @@ import type { CreateProductPaymentOptionRequest, ProductPaymentOption } from '..
 // See productPaymentOption.types.ts for why there's no list/get here —
 // mapped rows only ever arrive embedded in a product's own fetch.
 export const productPaymentOptionsService = {
+  // `productId` here is the product's own id, not a mapping row id — see
+  // productPaymentOption.types.ts. Returns the payment options mapped to
+  // that product (empty array if none are mapped yet).
+  findByProduct: async (productId: number): Promise<ProductPaymentOption[]> => {
+    const response = await apiClient.get<ApiEnvelope<ServiceResult<ProductPaymentOption[]>>>(
+      buildUrl(API_ENDPOINTS.adminProductPaymentOptionsByProduct, { id: productId }),
+    );
+    return unwrapData(response);
+  },
+
   create: async (payload: CreateProductPaymentOptionRequest): Promise<ProductPaymentOption> => {
     const response = await apiClient.post<ApiEnvelope<ServiceResult<ProductPaymentOption>>>(
       API_ENDPOINTS.adminProductPaymentOption,

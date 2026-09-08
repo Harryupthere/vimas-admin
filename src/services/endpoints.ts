@@ -38,6 +38,10 @@ export const API_ENDPOINTS = {
   adminProductMediaById: '/admin/product-media/:id',
   adminProductPaymentOption: '/admin/product-payment-option',
   adminProductPaymentOptionById: '/admin/product-payment-option/:id',
+  // Same path as adminProductPaymentOptionById, but GET here takes a
+  // product_id (not a mapping row id) and returns that product's mapped
+  // payment options — see productPaymentOption.types.ts.
+  adminProductPaymentOptionsByProduct: '/admin/product-payment-option/:id',
 
   // Product Bulk Details (bulk/package pricing tiers per product)
   adminProductBulkDetails: '/admin/product-bulk-details',

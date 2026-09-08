@@ -10,6 +10,7 @@ import { Select } from '../../components/Select';
 import { Textarea } from '../../components/Textarea';
 import { toApiError } from '../../services/api';
 import { productExtraChargesService } from '../../services/productExtraCharges.service';
+import { productPaymentOptionsService } from '../../services/productPaymentOptions.service';
 import { productsService } from '../../services/products.service';
 import type { CreateProductExtraChargeRequest, ProductExtraCharge } from '../../types/productExtraCharge.types';
 import type { ProductType } from '../../types/productType.types';
@@ -48,6 +49,7 @@ export function ProductExtraChargeFormModal({ open, charge, defaultProductId, on
       const initialProductId = charge?.productId ?? defaultProductId;
       reset({
         productId: initialProductId ? String(initialProductId) : '',
+        paymentOptionId: charge?.paymentOptionId ? String(charge.paymentOptionId) : '',
         name: charge?.name ?? '',
         description: charge?.description ?? '',
         symbol: charge?.symbol ?? '',
@@ -85,11 +87,43 @@ export function ProductExtraChargeFormModal({ open, charge, defaultProductId, on
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productTypeOptions]);
 
+  // Payment options are scoped to the selected product — an extra charge
+  // targets one payment option that's already mapped to that product.
+  const productPaymentOptionsQuery = useQuery({
+    queryKey: ['productPaymentOptions', 'byProduct', selectedProductId],
+    queryFn: () => productPaymentOptionsService.findByProduct(Number(selectedProductId)),
+    enabled: open && !!selectedProductId,
+  });
+
+  const paymentOptionChoices = useMemo(
+    () =>
+      (productPaymentOptionsQuery.data ?? []).map((mapping) => ({
+        value: String(mapping.payment_option_id),
+        label: mapping.paymentOption?.name ?? `#${mapping.payment_option_id}`,
+      })),
+    [productPaymentOptionsQuery.data],
+  );
+
+  // Same guard as productType above: if the product changes and the
+  // currently-chosen payment option isn't mapped to it, clear it. Only
+  // once the mapping has actually loaded — otherwise the empty choices
+  // during that first fetch would wrongly clear a value carried over from
+  // an existing charge being edited.
+  useEffect(() => {
+    if (!productPaymentOptionsQuery.isSuccess) return;
+    const current = watch('paymentOptionId');
+    if (current && !paymentOptionChoices.some((opt) => opt.value === current)) {
+      setValue('paymentOptionId', '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentOptionChoices, productPaymentOptionsQuery.isSuccess]);
+
   const mutation = useMutation({
     mutationFn: (values: ProductExtraChargeFormValues) => {
       const payload: CreateProductExtraChargeRequest = {
         ...values,
         productId: Number(values.productId),
+        paymentOptionId: Number(values.paymentOptionId),
         productType: values.productType as ProductType,
         calculationBasis: values.calculationBasis as CreateProductExtraChargeRequest['calculationBasis'],
         calculationType: values.calculationType as CreateProductExtraChargeRequest['calculationType'],
@@ -149,6 +183,27 @@ export function ProductExtraChargeFormModal({ open, charge, defaultProductId, on
             {...register('productType')}
           />
         </div>
+
+        <Select
+          label="Payment Option"
+          required
+          placeholder={
+            !selectedProductId
+              ? 'Select a product first'
+              : productPaymentOptionsQuery.isLoading
+                ? 'Loading payment options…'
+                : 'Select a payment option'
+          }
+          disabled={!selectedProductId || productPaymentOptionsQuery.isLoading || paymentOptionChoices.length === 0}
+          hint={
+            selectedProductId && !productPaymentOptionsQuery.isLoading && paymentOptionChoices.length === 0
+              ? 'This product has no payment options mapped yet — add one from Products first.'
+              : 'Only payment options mapped to this product are shown.'
+          }
+          options={paymentOptionChoices}
+          error={errors.paymentOptionId?.message}
+          {...register('paymentOptionId')}
+        />
 
         <div className={styles.row}>
           <Input label="Name" required error={errors.name?.message} {...register('name')} />

@@ -2,13 +2,15 @@
 // the join table mapping a Product to a PaymentOption (unique per pair).
 //
 // The admin controller (Backend/src/product-payment-option/admin/product-payment-option.controller.ts)
-// routes POST (create) and DELETE :id (remove). Note DELETE's :id is the
-// product_payment_options row's own id, not product_id or payment_option_id
-// — this is a 1-to-many per product, so it targets one specific link row.
-// There's still no GET-by-product/list endpoint — findOne() exists on the
-// service but isn't wired to any admin route — so mapped options only ever
-// arrive embedded in a product's own `paymentOptions` relation (Products
-// admin findOne/findAll include `paymentOptions.paymentOption`).
+// routes POST (create), DELETE :id (remove), and GET :id (findOne). Note
+// DELETE's :id is the product_payment_options row's own id, not product_id
+// or payment_option_id — this is a 1-to-many per product, so it targets one
+// specific link row. GET :id, by contrast, takes a product_id and returns
+// that product's mapped payment options (used to populate the payment
+// option dropdown in Product Extra Charges) — see
+// adminProductPaymentOptionsByProduct in services/endpoints.ts. Mapped
+// options also still arrive embedded in a product's own `paymentOptions`
+// relation (Products admin findOne/findAll include `paymentOptions.paymentOption`).
 import type { PaymentOption } from './paymentOption.types';
 
 export interface ProductPaymentOption {
